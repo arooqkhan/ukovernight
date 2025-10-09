@@ -48,6 +48,8 @@ class ShiftController extends Controller
                 ->get();
         }
 
+        
+
         return view('admin.pages.shift.index', compact('shifts'));
     }
 

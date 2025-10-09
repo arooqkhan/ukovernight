@@ -31,17 +31,27 @@
                         <div class="form-group">
                             <label for="employee_id">Select Employee</label>
                             <select class="form-control" id="employee_id" name="employee_id">
-                                <option value="" disabled selected>Select Employee</option>
+                                <option value="" disabled>Select Employee</option>
                                 @foreach($employees as $employee)
-                                    <option value="{{ $employee->id }}" {{ old('employee_id', $document->employee_id) == $employee->id ? 'selected' : '' }}>
-                                        {{ $employee->first_name }} {{$employee->last_name}}
-                                    </option>
+                                <option value="{{ $employee->id }}" {{ old('employee_id', $document->employee_id) == $employee->id ? 'selected' : '' }}>
+                                    {{ $employee->first_name }} {{$employee->last_name}}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
                 @endif
+
+                <!-- Expiry Date Input -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="inputExpiry">Expiry Date</label>
+                            <input type="date" class="form-control" id="inputExpiry" name="expiry_date" value="{{ old('expiry_date', $document->expiry_date) }}">
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-sm-12">
@@ -50,14 +60,14 @@
                             <input type="file" class="form-control" id="inputDocument" name="document" accept=".pdf,.doc,.docx,.xls,.xlsx">
                             <div id="documentPreview" class="mt-2">
                                 @if($document->document)
-                                    <div>
-                                        <strong>Current Document:</strong><br>
-                                        @if(strpos($document->document, '.pdf') !== false)
-                                            <a href="{{ asset($document->document) }}" target="_blank" class="btn btn-info">View PDF</a>
-                                        @else
-                                            <a href="{{ asset($document->document) }}" download class="btn btn-info">Download</a>
-                                        @endif
-                                    </div>
+                                <div>
+                                    <strong>Current Document:</strong><br>
+                                    @if(strpos($document->document, '.pdf') !== false)
+                                    <a href="{{ asset($document->document) }}" target="_blank" class="btn btn-info">View PDF</a>
+                                    @else
+                                    <a href="{{ asset($document->document) }}" download class="btn btn-info">Download</a>
+                                    @endif
+                                </div>
                                 @endif
                             </div>
                         </div>
@@ -71,6 +81,7 @@
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

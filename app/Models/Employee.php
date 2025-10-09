@@ -11,32 +11,35 @@ class Employee extends Model
 {
     use HasFactory,SoftDeletes;
     use HasRoles;
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'contact_email',
-        'gender',
-        'employee_id',
-        'department',
-        'designation',
-        'employee_status',
-        'role',
-        'salary',
-        'number',
-        'emgr_number',
-        'joining_date',
-        'work_shift',
-        'password',
-        'dob',
-        'ninumber',
-        'visa',
-        'visadate',
-        'address',
-        'documents',
-        'branch',
-        'image',
-    ];
+
+
+    protected $guarded = [];
+    // protected $fillable = [
+    //     'first_name',
+    //     'last_name',
+    //     'email',
+    //     'contact_email',
+    //     'gender',
+    //     'employee_id',
+    //     'department',
+    //     'designation',
+    //     'employee_status',
+    //     'role',
+    //     'salary',
+    //     'number',
+    //     'emgr_number',
+    //     'joining_date',
+    //     'work_shift',
+    //     'password',
+    //     'dob',
+    //     'ninumber',
+    //     'visa',
+    //     'visadate',
+    //     'address',
+    //     'documents',
+    //     'branch',
+    //     'image',
+    // ];
 
 
     public function leaves()

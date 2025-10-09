@@ -88,6 +88,7 @@
                         <th style="padding-top: 0 !important;">ID</th>
                         <th>Employee Name</th>
                         <th>Document Title</th>
+                        <th>Expiry Date</th>
                         <th>Status</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -111,6 +112,7 @@
     @endif
 </td>
                         <td>{{ $accouncementdocument->title }}</td>
+                        <td>{{ \Carbon\Carbon::parse($accouncementdocument->expiry_date)->format('d-m-Y') }}</td>
                         <td>
                             @if($accouncementdocument->status == 0)
                             <a href="{{ route('documents.create', ['title' => $accouncementdocument->title, 'id' => $accouncementdocument->employee->id, 'first_name' => $accouncementdocument->employee->first_name, 'last_name' => $accouncementdocument->employee->last_name]) }}" class="btn btn-warning">Pending/Upload</a>

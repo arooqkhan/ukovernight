@@ -182,7 +182,8 @@
 
 
                         </td>
-                        <td>{{$document->expiry_date}}</td>
+                <td>{{ \Carbon\Carbon::parse($document->expiry_date)->format('d-m-Y') }}</td>
+
                         <td class="text-center">
                             @if($document->status == 0)
                             @if(auth()->user()->role == 'admin' || auth()->user()->role == 'HR' || auth()->user()->role == 'Accountant')
@@ -282,5 +283,40 @@
             });
     }
 </script>
+
+
+<script>
+    $(document).ready(function() {
+        // Initialize your DataTable (if not already)
+        var table = $('#style-2').DataTable();
+
+        // Filter by employee dropdown
+        $('#employeeSelect').on('change', function() {
+            var selectedEmployee = $(this).val();
+
+            if(selectedEmployee === "") {
+                // Show all employees
+                table.rows().show();
+                table.search('').draw();
+            } else {
+                // Use a custom search function
+                $.fn.dataTable.ext.search.push(
+                    function(settings, data, dataIndex) {
+                        var rowEmployee = table.row(dataIndex).node().dataset.employee;
+                        return rowEmployee == selectedEmployee;
+                    }
+                );
+            }
+
+            // Redraw table and move to first page
+            table.draw();
+            table.page('first').draw('page');
+
+            // Remove custom search after drawing to not affect other filters
+            $.fn.dataTable.ext.search.pop();
+        });
+    });
+</script>
+
 
 @endsection

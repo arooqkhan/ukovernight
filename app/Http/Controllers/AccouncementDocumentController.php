@@ -62,27 +62,30 @@ class AccouncementDocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+   public function store(Request $request)
 {
     $user = auth()->user();
    
+    // Validate the request
     $request->validate([
         'employee_id' => 'required|exists:employees,id',
         'title' => 'required|string|max:255',
+        'expiry_date' => 'required|date',
     ]);
 
     // Create a new AccouncementDocument
     $accouncementDocument = new AccouncementDocument();
     $accouncementDocument->employee_id = $request->employee_id;
     $accouncementDocument->title = $request->title;
-   
-
-    // Save the document
+    $accouncementDocument->expiry_date = $request->expiry_date;
     $accouncementDocument->save();
 
-    Mail::to($user->employee->contact_email)->send(new EmployeeDocument($accouncementDocument));
+    // Send email to the employee associated with the logged-in user
+    if ($user->employee && $user->employee->contact_email) {
+        Mail::to($user->employee->contact_email)->send(new EmployeeDocument($accouncementDocument));
+    }
 
-    // Redirect with a success message
+    // Redirect with success message
     return redirect()->route('accouncementdocument.index')->with('success', 'Announcement document created successfully.');
 }
 

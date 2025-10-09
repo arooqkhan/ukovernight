@@ -75,7 +75,7 @@
               
                     <div class="col-sm-6">
                         <label for="note">Note:</label>
-                        <input type="text" placeholder="Note..." class="form-control" id="note" name="note"
+                        <input type="text" placeholder="Note..." class="form-control" id="note" name="node"
                                value="{{ old('note') }}" required>
                     </div>
                 </div>

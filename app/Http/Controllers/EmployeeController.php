@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 use Illuminate\Support\Facades\Mail;
@@ -41,10 +42,10 @@ class EmployeeController extends Controller
 
         if ($user->role === 'admin' || $user->role === 'HR' || $user->role === 'Accountant') {
             // If the user is an admin, show all employees with pagination
-            $employees = Employee::orderBy('created_at', 'desc')->paginate(9);
+            $employees = Employee::orderBy('created_at', 'desc')->get();
         } else {
             // If the user is not an admin, show only the logged-in user's employee record
-            $employees = Employee::where('id', $user->employee_id)->paginate(9);
+            $employees = Employee::where('id', $user->employee_id)->get();
         }
 
         $branches = Branch::all();
@@ -78,6 +79,8 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
+
+     
 
        
         // Validate the incoming request data
@@ -141,7 +144,7 @@ class EmployeeController extends Controller
         $user->assignRole($role);
 
         // Update the employee record with the user_id
-        $employee->update(['user_id' => $user->id]);
+        // $employee->update(['user_id' => $user->id]);
 
 
         $orgpassword = $request->password;
@@ -399,5 +402,30 @@ public function show($id)
 
     return redirect()->route('employee.index')->with('success', 'Employee and related user deleted successfully.');
 }
+
+
+
+
+
+public function downloadPDF($id)
+{
+    // Fetch same data as show()
+    $employee = Employee::with(['user','branchDetail'])->findOrFail($id);
+
+    $user = User::where('employee_id', $employee->id)->first();
+
+    $onboarding = null;
+    if ($user) {
+        $onboarding = Onboarding::where('user_id', $user->id)->first();
+    }
+
+    // Load PDF view (we’ll create this next)
+    $pdf = Pdf::loadView('admin.pages.employee.pdf', compact('employee', 'onboarding'));
+
+    // Download PDF
+    return $pdf->download('employee_'.$employee->id.'.pdf');
+}
+
+
 
 }

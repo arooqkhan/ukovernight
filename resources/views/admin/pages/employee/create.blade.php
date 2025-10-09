@@ -186,17 +186,19 @@
                         <span class="text-danger">{{ $errors->first('joining_date') }}</span>
                         @endif
                     </div>
-                    <div class="col-sm-6">
-                        <label for="inputWorkShift">Work Shift</label>
-                        <select class="form-control" id="inputWorkShift" name="work_shift" required>
-                            <option value="">Select Work Shift</option>
-                            <option value="Day" {{ old('work_shift') == 'Day' ? 'selected' : '' }}>Day</option>
-                            <option value="Night" {{ old('work_shift') == 'Night' ? 'selected' : '' }}>Night</option>
-                        </select>
-                        @if ($errors->has('work_shift'))
-                        <span class="text-danger">{{ $errors->first('work_shift') }}</span>
-                        @endif
-                    </div>
+                <div class="col-sm-6">
+    <label for="inputWorkShift">Work Shift</label>
+    <select class="form-control" id="inputWorkShift" name="work_shift" required>
+        <option value="">Select Work Shift</option>
+        <option value="Day" {{ old('work_shift') == 'Day' ? 'selected' : '' }}>Day</option>
+        <option value="Night" {{ old('work_shift') == 'Night' ? 'selected' : '' }}>Night</option>
+        <option value="Both" {{ old('work_shift') == 'Both' ? 'selected' : '' }}>Both</option>
+    </select>
+    @if ($errors->has('work_shift'))
+        <span class="text-danger">{{ $errors->first('work_shift') }}</span>
+    @endif
+</div>
+
                 </div>
 
                 <div class="row mb-4">
@@ -238,7 +240,7 @@
                     <div class="document-input mb-2">
                         <div class="input-group">
                             <input type="text" name="documents[]" placeholder="Enter document name (e.g., CNIC)" class="form-control">
-                            <button type="button" class="btn btn-success add-document-btn">Add</button>
+                            <button type="button" class="btn btn-success add-document-btn">Add Another Document</button>
                         </div>
                     </div>
                 </div>

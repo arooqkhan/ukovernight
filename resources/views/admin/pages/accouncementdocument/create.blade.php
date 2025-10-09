@@ -22,7 +22,7 @@
                         <select class="form-control" id="inputEmployee" name="employee_id" required>
                             <option value="" disabled selected>Select an Employee</option>
                             @foreach ($employees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}</option>
+                            <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -33,6 +33,14 @@
                     <div class="col-sm-12">
                         <label for="inputTitle">Title</label>
                         <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Document Title" value="{{ old('title') }}" required>
+                    </div>
+                </div>
+
+                <!-- Expiry Date Input -->
+                <div class="row mb-4">
+                    <div class="col-sm-12">
+                        <label for="inputExpiry">Expiry Date</label>
+                        <input type="date" class="form-control" id="inputExpiry" name="expiry_date" value="{{ old('expiry_date') }}" required>
                     </div>
                 </div>
 

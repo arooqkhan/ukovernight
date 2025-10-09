@@ -5,6 +5,12 @@
         <div class="col-md-12">
             <h3 class="">Edit Employee</h3>
             <div class="card">
+                    <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 d-flex justify-content-between align-items-center mb-2">
+                  
+                    <a href="{{route('employee.index')}}" class="btn btn-secondary m-2">Back</a>
+                </div>
+            </div>
 
                 <div class="card-body">
                     @if(session('success'))
@@ -193,18 +199,18 @@
                                 <span class="text-danger">{{ $errors->first('joining_date') }}</span>
                                 @endif
                             </div>
-                            <div class="col-sm-6">
-                                <label for="inputWorkShift">Work Shift</label>
-                                <select class="form-control" id="inputWorkShift" name="work_shift" required>
-                                    <option value="">Select Work Shift</option>
-                                    <option value="Day" {{ old('work_shift', $employee->work_shift) == 'Day' ? 'selected' : '' }}>Day</option>
-                                    <option value="Night" {{ old('work_shift', $employee->work_shift) == 'Night' ? 'selected' : '' }}>Night</option>
-                                    <!-- Add more options as needed -->
-                                </select>
-                                @if ($errors->has('work_shift'))
+                                            <div class="col-sm-6">
+                            <label for="inputWorkShift">Work Shift</label>
+                            <select class="form-control" id="inputWorkShift" name="work_shift" required>
+                                <option value="">Select Work Shift</option>
+                                <option value="Day" {{ old('work_shift', $employee->work_shift) == 'Day' ? 'selected' : '' }}>Day</option>
+                                <option value="Night" {{ old('work_shift', $employee->work_shift) == 'Night' ? 'selected' : '' }}>Night</option>
+                                <option value="Both" {{ old('work_shift', $employee->work_shift) == 'Both' ? 'selected' : '' }}>Both</option>
+                            </select>
+                            @if ($errors->has('work_shift'))
                                 <span class="text-danger">{{ $errors->first('work_shift') }}</span>
-                                @endif
-                            </div>
+                            @endif
+                        </div>
                         </div>
 
                         <div class="row mb-4">

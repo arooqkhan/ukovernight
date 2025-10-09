@@ -9,7 +9,10 @@ class AccouncementDocument extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['employee_id','title','status'];
+
+    protected $guarded = [];
+
+    // protected $fillable = ['employee_id','title','status'];
 
 
 

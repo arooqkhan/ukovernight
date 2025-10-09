@@ -89,6 +89,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::patch('/document/{id}/update-status', [DocumentController::class, 'updateStatus'])->name('document.updateStatus');
 
 
+    Route::get('/employee/{id}/download-pdf', [EmployeeController::class, 'downloadPDF'])->name('employee.download.pdf');
+
+
+
 
 
 

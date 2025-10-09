@@ -7,6 +7,13 @@
             Back
         </a>
 
+
+        <a href="{{ route('employee.download.pdf', $employee->id) }}" class="btn btn-danger mb-3">
+    <i class="fas fa-file-pdf"></i> Download PDF
+</a>
+
+
+
         <div class="card shadow-sm">
             <div class="card-header  text-white">
                 <h4>Employee Details: {{ $employee->first_name }} {{ $employee->last_name }}</h4>
@@ -45,12 +52,12 @@
                             <div class="col-md-6 mb-3">
                                 <ul class="list-group">
                                     <li class="list-group-item"><strong>Contact Number:</strong> {{ $employee->number ?? '-' }}</li>
-                                    <li class="list-group-item"><strong>Emergency Number:</strong> {{ $employee->emergency_number ?? '-' }}</li>
-                                    <li class="list-group-item"><strong>NI Number:</strong> {{ $employee->ni_number ?? '-' }}</li>
+                                    <li class="list-group-item"><strong>Emergency Number:</strong> {{ $employee->emgr_number ?? '-' }}</li>
+                                    <li class="list-group-item"><strong>NI Number:</strong> {{ $employee->ninumber ?? '-' }}</li>
                                     <li class="list-group-item"><strong>Date of Birth:</strong> {{ $employee->dob ?? '-' }}</li>
                                     <li class="list-group-item"><strong>Address:</strong> {{ $employee->address ?? '-' }}</li>
-                                    <li class="list-group-item"><strong>Visa Status:</strong> {{ $employee->visa_status ?? '-' }}</li>
-                                    <li class="list-group-item"><strong>Next Right To Check Date:</strong> {{ $employee->visa_date ?? '-' }}</li>
+                                    <li class="list-group-item"><strong>Visa Status:</strong> {{ $employee->visa ?? '-' }}</li>
+                                    <li class="list-group-item"><strong>Next Right To Check Date:</strong> {{ $employee->visadate ?? '-' }}</li>
                                 </ul>
                             </div>
                         </div>

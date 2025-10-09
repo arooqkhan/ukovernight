@@ -13,10 +13,15 @@ class Shift extends Mailable
 {
     use Queueable, SerializesModels;
 
+     protected $guarded = [];
+
     /**
      * Create a new message instance.
      */
     public  $shift;
+
+   
+
     public function __construct($shift)
     {
         $this->shift = $shift;
