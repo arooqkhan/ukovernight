@@ -7,7 +7,6 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
       body {
-           /* background-image: url('{{ asset('images/login.jpeg') }}');  */
           height: 90vh;
           display: flex;
           justify-content: center;
@@ -74,6 +73,20 @@
 
 <div class="login-container">
   <h2 class="login-title">Welcome Back</h2>
+
+  {{-- Show error message --}}
+  @if (session('error'))
+      <div class="alert alert-danger text-center">
+          {{ session('error') }}
+      </div>
+  @endif
+
+  @if ($errors->any())
+      <div class="alert alert-danger text-center">
+          {{ $errors->first() }}
+      </div>
+  @endif
+
   <form id="login-form" method="POST" action="{{ route('login') }}">
       @csrf
       <div class="form-group">
@@ -96,3 +109,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+<script>
+    setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) alert.remove();
+    }, 4000);
+</script>

@@ -3,6 +3,7 @@
 use App\Models\Leave;
 use App\Models\Expense;
 use App\Models\Attendance;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -22,11 +23,11 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExpenseConttroller;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\PayslipUploadController;
 use App\Http\Controllers\AccouncementDocumentController;
-use App\Http\Controllers\OnboardingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,16 @@ Route::get('/test-email', function () {
     return "Test email sent!";
 });
 
+
+Route::get('/', function () {
+    // Agar user login hai
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+
+    // Agar login nahi hai, to Breeze ka login page dikhao
+    return redirect()->route('login');
+});
 
 
 
@@ -216,21 +227,4 @@ Route::middleware(['role:super-admin|admin'])->group(function () {
     Route::get('users/{userId}/delete', [UserController::class, 'destroy'])->name('users.delete');
 });
 
-// Public routes
-Route::get('register', [HomeController::class, 'registerform'])->name('register');
-Route::post('admin.register', [HomeController::class, 'registerData'])->name('admin.register');
-Route::get('login', [HomeController::class, 'log2'])->name('login');
-Route::get('/', [HomeController::class, 'log'])->name('admin.login');
-Route::get('admin/login', [HomeController::class, 'log'])->name('admin.login');
-Route::post('admin/login', [HomeController::class, 'login'])->name('admin.logins');
-Route::get('password.request', [HomeController::class, "showForgotPasswordForm"])->name('password.request');
-Route::get('reset-password', [HomeController::class, "resetPasswordForm"])->name('reset.password');
-Route::post('reset-password', [HomeController::class, 'reset'])->name('password.update');
-Route::get('logout', [HomeController::class, 'logout'])->name('logout');
 
-// Admin routes
-Route::get('admin', [HomeController::class, 'abcGet'])->name('admin.get');
-Route::post('admin', [HomeController::class, 'abc'])->name('admin');
-
-
-    

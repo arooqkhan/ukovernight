@@ -71,25 +71,25 @@
 
         <div class="widget-content widget-content-area">
 
-           <div class="d-flex justify-content-between align-items-center mx-2 mb-3">
+            <div class="d-flex justify-content-between align-items-center mx-2 mb-3">
 
-    <!-- Add Employee Button -->
-    @can('create employee')
-        <a href="{{ route('employee.create') }}" class="btn btn-secondary">Add Employee</a>
-    @endcan
+                <!-- Add Employee Button -->
+                @can('create employee')
+                <a href="{{ route('employee.create') }}" class="btn btn-secondary">Add Employee</a>
+                @endcan
 
-    <!-- Branch Filter Select Box -->
-    <div class="col-md-4 mt-3">
-        <label for="branchFilter" class="form-label">Filter by Branch</label>
-        <select class="form-control branch-filter" id="branchFilter" name="branch">
-            <option value="all" selected>All</option>
-            @foreach($branches as $branch)
-                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-            @endforeach
-        </select>
-    </div>
+                <!-- Branch Filter Select Box -->
+                <div class="col-md-4 mt-3">
+                    <label for="branchFilter" class="form-label">Filter by Branch</label>
+                    <select class="form-control branch-filter" id="branchFilter" name="branch">
+                        <option value="all" selected>All</option>
+                        @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-</div>
+            </div>
 
 
 
@@ -109,6 +109,12 @@
                 </thead>
                 <tbody>
                     @forelse($employees as $employee)
+
+                    {{-- Skip if role is admin --}}
+                    @if($employee->role === 'admin')
+                    @continue
+                    @endif
+
                     <tr data-branch="{{ $employee->branch }}">
                         <td>{{ $employee->id }}</td>
                         <td>
@@ -127,13 +133,14 @@
                         <td>{{ $employee->role }}</td>
                         <td class="text-center">
 
-                         @if($employee->role !== 'admin')
+                            @if($employee->role !== 'admin')
                             @can('update employee')
                             <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-primary btn-sm">
                                 <i class="fas fa-edit"></i>
                             </a>
                             @endcan
                             @endif
+
                             <form action="{{ route('employee.destroy', $employee->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
@@ -144,10 +151,9 @@
                                 @endcan
                             </form>
 
-                        
-    <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-info btn-sm">
-        <i class="fas fa-eye"></i>
-    </a>
+                            <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-info btn-sm">
+                                <i class="fas fa-eye"></i>
+                            </a>
 
                             <a href="{{ route('documents.showByEmployee', $employee->id) }}" class="btn btn-info btn-sm">
                                 <i class="fas fa-file-alt"></i> Documents
@@ -157,7 +163,7 @@
                                 <i class="fas fa-calendar-check"></i> Attendance
                             </a>
 
-                            <a href="{{ route('payroll.showWithEmployee', [0, $employee->id, $employee->first_name, $employee->last_name]) }}" class="btn btn-info btn-sm mx-1
+                            <a href="{{ route('payroll.showWithEmployee', [0, $employee->id, $employee->first_name, $employee->last_name]) }}" class="btn btn-info btn-sm mx-1">
                                 <i class="fas fa-dollar-sign"></i> Payslip
                             </a>
                         </td>
@@ -168,6 +174,7 @@
                     </tr>
                     @endforelse
                 </tbody>
+
             </table>
 
         </div>

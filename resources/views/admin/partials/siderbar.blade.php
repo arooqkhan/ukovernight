@@ -1,72 +1,380 @@
 <style>
-    .menu a {
-        text-decoration: none;
-        /* Remove default underline */
+    .sidebar-wrapper {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
     }
-
-    /* Optional: Remove text decoration on hover or active state */
-    .menu a:hover,
-    .menu a:focus,
-    .menu a:active {
-        text-decoration: none;
-        /* Ensure underline doesn't appear on hover or focus */
-    }
-
-
     
+    .sidebar-wrapper::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    .sidebar-wrapper::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-wrapper::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+    }
+    
+    .nav-logo {
+        padding: 8px 7px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-logo h4 {
+        color: white;
+        font-weight: 700;
+        margin: 0;
+        font-size: 1.5rem;
+    }
+    
+    
+    
+    .user-info::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    }
+    
+   
+    
+    .profile-img:hover {
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: scale(1.05);
+    }
+    
+    .profile-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .profile-content {
+        flex: 1;
+    }
+    
+    .profile-content h6 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        letter-spacing: 0.5px;
+    }
+    
+    .profile-content p {
+        margin: 5px 0 0;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 4px 10px;
+        border-radius: 20px;
+        display: inline-block;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Animation for profile section */
+    @keyframes profileGlow {
+        0% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(74, 144, 226, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0); }
+    }
+    
+    .user-info {
+        animation: profileGlow 2s infinite;
+    }
+    
+    .menu-categories {
+        padding: 15px 0;
+    }
+    
+    .menu {
+        margin-bottom: 5px;
+    }
+    
+    .menu a {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        color: white !important; /* Force white color */
+        transition: all 0.3s ease;
+        text-decoration: none;
+        border-left: 3px solid transparent;
+    }
+    
+    .menu a:hover, 
+    .menu a:focus, 
+    .menu a.active {
+        background: rgba(255, 255, 255, 0.15);
+        color: white !important;
+        border-left: 3px solid #4CAF50;
+        text-decoration: none;
+    }
+    
+    .menu a div {
+        display: flex;
+        align-items: center;
+    }
+    
+    .menu svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+        color: white !important; /* Force white color for icons */
+        opacity: 0.9;
+    }
+    
+    .menu a:hover svg,
+    .menu a:focus svg,
+    .menu a.active svg {
+        opacity: 1;
+        color: white !important;
+    }
+    
+    .menu span {
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: white !important; /* Force white color for text */
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .sidebar-wrapper {
+            width: 70px !important;
+        }
+        
+        .nav-logo h4, 
+        .profile-content, 
+        .menu span {
+            display: none;
+        }
+        
+        .profile-img {
+            margin-right: 0;
+        }
+        
+        .menu a {
+            justify-content: center;
+            padding: 15px;
+        }
+        
+        .menu svg {
+            margin-right: 0;
+        }
+    }
+
+      .profile-info {
+        padding: 20px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background:  linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)!important;
+        margin: 10px 15px;
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .user-info {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)!important;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .user-info::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    }
+    
+    .profile-img:hover img {
+        transform: scale(1.1);
+    }
+    
+    /* Fallback for broken images */
+    .profile-img img[src=""],
+    .profile-img img:not([src]) {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    
+    .profile-img img[src=""]::after,
+    .profile-img img:not([src])::after {
+        content: "👤";
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .profile-content {
+        flex: 1;
+        min-width: 0; /* Prevents text overflow */
+    }
+    
+    .profile-content h6 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: white;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .profile-content p {
+        margin: 8px 0 0;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.95);
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 6px 12px;
+        border-radius: 20px;
+        display: inline-block;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        text-transform: capitalize;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+    
+    /* Animation for profile section */
+    @keyframes profileGlow {
+        0% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(74, 144, 226, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0); }
+    }
+    
+    .user-info {
+        animation: profileGlow 2s infinite;
+    }
+    
+    /* Responsive design for profile */
+    @media (max-width: 768px) {
+        .profile-info {
+            margin: 10px;
+            padding: 15px;
+        }
+        
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            margin-right: 12px;
+        }
+        
+        .profile-content h6 {
+            font-size: 1rem;
+        }
+        
+        .profile-content p {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+        }
+    }
+
+/* Sidebar scrollbar - professional style */
+.sidebar-wrapper {
+    overflow-y: auto; /* Only this div scrolls */
+}
+
+/* Track (background) */
+.sidebar-wrapper::-webkit-scrollbar {
+    width: 8px; /* thinner scrollbar */
+}
+
+.sidebar-wrapper::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1); /* subtle track */
+    border-radius: 10px;
+}
+
+/* Thumb (the draggable part) */
+.sidebar-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2); /* subtle, blends with sidebar */
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+/* Thumb hover effect */
+.sidebar-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4); /* stands out on hover */
+}
+
+/* Optional: minimal scrollbar for Firefox */
+.sidebar-wrapper {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) rgba(0,0,0,0.1);
+}
+
+
+
 </style>
 
-
-
-
-<div class="sidebar-wrapper sidebar-theme" style="width: 260px;">
+<div class="sidebar-wrapper sidebar-theme" style="width: 274px;">
     <nav id="sidebar">
         <div class="navbar-nav">
             <div class="nav-logo">
-                <!-- <div class="nav-item theme-logo" style="width: 100%; text-align: center;">
-                    <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('images/logo.jpeg') }}" alt="logo" style="max-width: 90%; height: auto;">
-                    </a>
-                </div> -->
-                <h4 class="text-center mt-2">ukovernight</h4>
-            </div>
-            <!-- <div class="nav-item sidebar-toggle">
-                <div class="btn-toggle sidebarCollapse">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-left">
-                        <polyline points="11 17 6 12 11 7"></polyline>
-                        <polyline points="18 17 13 12 18 7"></polyline>
-                    </svg>
-                </div>
-            </div> -->
-        </div>
-        <div class="profile-info">
-            <div class="user-info bg-secondary">
-                <div class="profile-img">
-                    @if (Auth::user()->image)
-                    <img src="{{ asset(Auth::user()->image) }}"  alt="avatar">
-                    @else
-                    <img src="{{ asset('images/dummy.jpg') }}" alt="No Image">
-                    @endif
-                </div>
-                <div class="profile-content">
-                    @if(auth()->check())
-                    <h6 class="text-white">{{ auth()->user()->name }}</h6>
-                    @endif
-                    <p class="text-white">
-                        @if (auth()->user()->role == 0)
-                        HR
-                        @else
-                        {{ auth()->user()->role }}
-                        @endif
-                    </p>
-                </div>
+                <h4 class="text-center mt-2">The FanServices</h4>
             </div>
         </div>
+        
+      <div class="profile-info">
+    <div class="user-info">
+        <div class="profile-img">
+            @if (Auth::user()->image && file_exists(public_path(Auth::user()->image)))
+            <img src="{{ asset(Auth::user()->image) }}" alt="{{ auth()->user()->name }}" onerror="this.src='{{ asset('images/dummy.jpg') }}'" style="width: 60px; height: 60px;">
+            @else
+            <img src="{{ asset('images/dummy.jpg') }}" alt="{{ auth()->user()->name }}">
+            @endif
+        </div>
+        <div class="profile-content">
+            @if(auth()->check())
+            <h6 class="text-white">{{ auth()->user()->name }}</h6>
+            @endif
+            <p class="text-white">
+                @if (auth()->user()->role == 0)
+                HR
+                @else
+                {{ auth()->user()->role }}
+                @endif
+            </p>
+        </div>
+    </div>
+</div>
 
-        <div class="shadow-bottom"></div>
         <ul class="list-unstyled menu-categories">
             <li class="menu">
-                <a href="{{ route('dashboard') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('dashboard') }}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -77,17 +385,13 @@
                 </a>
             </li>
 
-
-
             <li class="menu">
-                <a href="{{ route('employee.index') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('employee.index') }}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('employee.index') ? 'active' : '' }}">
                     <div class="">
-                        <!-- Replace the existing SVG with a custom SVG -->
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                        <!-- Conditional logic for displaying "Employee" or "Profile" -->
                         <span>
                             @if (in_array(auth()->user()->role, ['admin', 'HR', 'Accountant']))
                             Employee
@@ -100,9 +404,8 @@
             </li>
 
             <li class="menu">
-                <a href="{{ route('document.index') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('document.index') }}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('document.index') ? 'active' : '' }}">
                     <div class="">
-                        <!-- Replace the existing SVG with a document SVG icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"></path>
                             <line x1="6" y1="10" x2="14" y2="10"></line>
@@ -114,21 +417,8 @@
                 </a>
             </li>
 
-
-            <!-- <li class="menu">
-              <a href="{{ route('accouncementdocument.index') }}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
-                            <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        <span>Request Document</span>
-                    </div>
-                </a>
-            </li> -->
-
             <li class="menu">
-                <a href="{{route('leave.index')}}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{route('leave.index')}}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('leave.index') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-watch">
                             <circle cx="12" cy="12" r="7"></circle>
@@ -142,7 +432,7 @@
             </li>
 
             <li class="menu">
-                <a href="{{route('attendance.index')}}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{route('attendance.index')}}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('attendance.index') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar-check">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -156,35 +446,9 @@
                 </a>
             </li>
 
-            <!-- <li class="menu">
-                <a href="{{route('payroll.index')}}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
-                            <line x1="12" y1="1" x2="12" y2="23"></line>
-                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                        </svg>
-                        <span>PayRoll</span>
-                    </div>
-                </a>
-            </li> -->
-
-            <!-- @if(auth()->user()->role == 'admin' || auth()->user()->role == 'Accountant' || auth()->user()->role == 'HR')
-            <li class="menu">
-                <a href="{{route('payslip.index')}}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"></path>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                        </svg>
-                        <span>PaySlip</span>
-                    </div>
-                </a>
-            </li>
-            @endif -->
             @if(auth()->user()->role == 'admin' || auth()->user()->role == 'Accountant' || auth()->user()->role == 'HR')
             <li class="menu">
-                <a href="{{route('payslipupload.index')}}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{route('payslipupload.index')}}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('payslipupload.index') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -198,7 +462,7 @@
             @endif
 
             <li class="menu">
-                <a href="{{ route('shift.index') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('shift.index') }}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('shift.index') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
                             <circle cx="12" cy="12" r="10"></circle>
@@ -211,7 +475,7 @@
             </li>
 
             <li class="menu">
-                <a href="{{route('rota.index')}}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{route('rota.index')}}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('rota.index') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -224,12 +488,10 @@
                 </a>
             </li>
 
-
             @if(auth()->user()->role == 'admin' || auth()->user()->role == 'Accountant' || auth()->user()->role == 'HR')
             <li class="menu">
-                <a href="{{ route('expenses.index') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('expenses.index') }}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('expenses.index') ? 'active' : '' }}">
                     <div class="">
-                        <!-- Wallet SVG Icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-wallet">
                             <path d="M20 15V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7"></path>
                             <rect x="1" y="8" width="22" height="14" rx="2" ry="2"></rect>
@@ -239,13 +501,11 @@
                     </div>
                 </a>
             </li>
-
             @endif
 
             <li class="menu">
-                <a href="{{ route('announcements.index') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('announcements.index') }}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('announcements.index') ? 'active' : '' }}">
                     <div class="">
-                        <!-- Announcement SVG Icon (Bell) -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
                             <path d="M18 8A6 6 0 0 0 6 8v5H3v2h1v2h14v-2h1v-2h-3V8z"></path>
                             <path d="M13 21h-2a2 2 0 0 1-2-2h6a2 2 0 0 1-2 2z"></path>
@@ -255,10 +515,8 @@
                 </a>
             </li>
 
-
-
             <li class="menu">
-                <a href="{{route('profile.update')}}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{route('profile.update')}}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('profile.update') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sliders">
                             <line x1="4" y1="21" x2="4" y2="14"></line>
@@ -277,9 +535,8 @@
             </li>
 
             @if(auth()->user()->role == 'admin' || auth()->user()->role == 'Accountant' || auth()->user()->role == 'HR')
-
             <li class="menu">
-                <a href="{{ route('roles.index') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('roles.index') }}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('roles.index') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
                             <path d="M17 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -292,9 +549,8 @@
                 </a>
             </li>
 
-
             <li class="menu">
-                <a href="{{ route('branch.index') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('branch.index') }}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('branch.index') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" 
@@ -310,11 +566,8 @@
                 </a>
             </li>
 
-        
-
-
-             <li class="menu">
-                <a href="{{route('onboarding.index')}}" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu">
+                <a href="{{route('onboarding.index')}}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('onboarding.index') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" 
@@ -329,13 +582,10 @@
                     </div>
                 </a>
             </li>
-
-    @endif
-
-
+            @endif
 
             <li class="menu">
-                <a href="{{route('contacts')}}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{route('contacts')}}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('contacts') ? 'active' : '' }}">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin">
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -346,11 +596,9 @@
                 </a>
             </li>
 
-
             <li class="menu">
                 <a href="{{ route('logout') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        <!-- Logout SVG Icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out">
                             <path d="M10 17l5-5-5-5M15 12H3" />
                         </svg>
@@ -358,12 +606,6 @@
                     </div>
                 </a>
             </li>
-
-
-
-
         </ul>
-
     </nav>
-
 </div>
