@@ -24,160 +24,7 @@ use Illuminate\Support\Facades\Password;
 class HomeController extends Controller
 {
 
-    public function redirect()
-    {
-
-        $user = Auth::user();
-
-        if ($user) {
-
-            return view('admin.master.main');
-        } else {
-            return redirect()->route('admin.login');
-        }
-    }
-
-
-    public function abc(Request $request)
-    {
-        if (Auth::check()) {
-            return view('admin.master.main');
-        } else {
-            return redirect()->route('admin.login');
-        }
-    }
-
-    public function abcGet(Request $request)
-    {
-        if (Auth::check()) {
-            return view('admin.master.main');
-        } else {
-            return redirect()->route('admin.login');
-        }
-    }
-
-
-
-    public function login(Request $request)
-    {
-
-
-        $user = User::where('email', $request->email)->first();
-
-        if ($user && Hash::check($request->password, $user->password)) {
-
-            Auth::login($user);
-            return redirect()->route('dashboard');
-        }
-
-        return redirect()->back()->with('error', 'Email and Password is Incorrect.');
-    }
-
-    public function reset(Request $request)
-    {
-        // Validate the request
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
-            'password_confirmation' => 'required',
-        ]);
-        // Attempt password reset
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                // Log user information for debugging
-                Log::info('User ID: ' . $user->id);
-                Log::info('User Email: ' . $user->email);
-                // Hash and update the password
-                $user->forceFill([
-                    'password' => bcrypt($password)
-                ])->save();
-                // You can perform additional actions after password reset, like logging in the user
-                // auth()->login($user);
-            }
-        );
-        // Log the password reset status
-        Log::info('Password reset status: ' . $status);
-        // Redirect the user based on the password reset status
-        return $status == Password::PASSWORD_RESET
-            ? redirect()->route('admin.login')->with('success', 'Password update successful. Please login.')
-            : back()->with('error', 'Password update failed. Please try again.');
-    }
-
-
-    public function registerform()
-    {
-        return view('auth.register');
-    }
-
-
-    public function registergata(Request $request)
-    {
-
-
-        // Validate the request 
-        $request->validate([
-            'name' => 'required|string|max:255',
-
-            'email' => 'required|string|email|max:255|unique:users,email', // Check uniqueness in the "users" table
-            'password' => 'required|string|min:8',
-        ]);
-        try {
-            // Create a new user instance
-            $user = new User();
-            $user->name = $request->name;
-
-            $user->email = $request->email;
-            $user->password = bcrypt($request->password);
-
-            // Save the user
-            $user->save();
-
-            // Redirect to the login page
-            return redirect()->route('admin.login')->with('success', 'Registration successful. Please login.');
-        } catch (\Exception $e) {
-            // If an exception occurs, it might be due to a duplicate email entry
-            return redirect()->back()->withErrors(['email' => 'The email address is already registered.'])->withInput();
-        }
-    }
-
-
-
-    public function log()
-    {
-
-
-        return view('auth.login');
-    }
-
-    public function log2()
-    {
-
-
-        return view('auth.login');
-    }
-
-    public function showForgotPasswordForm()
-    {
-
-        return view('auth.forgot-password');
-    }
-
-    public function resetPasswordForm()
-    {
-        // $set = Setting::firstOrNew();
-        return view('auth.reset-password');
-    }
-
-    public function logout()
-
-    {
-
-        Auth::logout();
-
-        return redirect()->route('admin.login');
-    }
+   
 
     public function updateProfile()
     {
@@ -205,8 +52,9 @@ class HomeController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
 
+        // --- Update image only if uploaded ---
         if ($request->hasFile('image')) {
-            // Delete the old image if exists
+            // Delete old user image if exists
             if ($user->image && file_exists(public_path($user->image))) {
                 unlink(public_path($user->image));
             }
@@ -218,6 +66,29 @@ class HomeController extends Controller
         }
 
         $user->save();
+
+        // --- Update related employee record ---
+        if ($user->employee_id) {
+            $employee = \App\Models\Employee::find($user->employee_id);
+            if ($employee) {
+                // Split full name into first and last name
+                $nameParts = explode(' ', $user->name, 2);
+                $employee->first_name = $nameParts[0];
+                $employee->last_name = isset($nameParts[1]) ? $nameParts[1] : '';
+
+                // Update employee image only if a new one was uploaded
+                if ($request->hasFile('image')) {
+                    // Delete old employee image if exists
+                    if ($employee->image && file_exists(public_path($employee->image))) {
+                        unlink(public_path($employee->image));
+                    }
+
+                    $employee->image = $user->image; // same image path as user's
+                }
+
+                $employee->save();
+            }
+        }
 
         return redirect()->route('profile.update')->with('success', 'Profile updated successfully.');
     }
@@ -259,15 +130,15 @@ class HomeController extends Controller
     public function dashboard()
     {
 
-      
+
 
         $user = Auth()->user();
 
-        
-         if ($user->role === 'Employee' && !Onboarding::where('user_id', $user->id)->exists()) {
-        return redirect()->route('onboarding.create');
-    }
-       
+
+        if ($user->role === 'Employee' && !Onboarding::where('user_id', $user->id)->exists()) {
+            return redirect()->route('onboarding.create');
+        }
+
 
         // Get total count of employees
         $totalEmployees = Employee::count();
@@ -386,9 +257,6 @@ class HomeController extends Controller
 
 
 
-
-
-
         $empdoc = AccouncementDocument::where('employee_id', $user)
             ->where('status', 0)
             ->first();
@@ -412,7 +280,7 @@ class HomeController extends Controller
 
 
         // Return data to the view
-        return view('admin.master', compact(
+        return view('dashboard', compact(
             'totalEmployees',
             'totalSalary',
             'totalExpense',
