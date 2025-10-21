@@ -344,7 +344,11 @@
     <nav id="sidebar">
         <div class="navbar-nav">
             <div class="nav-logo">
+<<<<<<< HEAD
                 <h4 class="text-center mt-2">UK Overnight</h4>
+=======
+                <h4 class="text-center mt-2">The FanServices</h4>
+>>>>>>> 3b7a978bb23a960f14109a463d57bd3e5d10d8f6
             </div>
         </div>
         
