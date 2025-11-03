@@ -249,6 +249,26 @@
                         </div>
 
                         <div class="row mb-4">
+
+
+                        <div class="col-sm-12">
+    <label for="inputPensionStatus">Pension Status</label>
+    <select class="form-control" id="inputPensionStatus" name="pension_status" required>
+        <option value="">Select Pension Status</option>
+        <option value="enroll" {{ old('pension_status', $employee->pension_status) == 'enroll' ? 'selected' : '' }}>Enroll</option>
+        <option value="notenroll" {{ old('pension_status', $employee->pension_status) == 'notenroll' ? 'selected' : '' }}>Not Enroll</option>
+        <option value="opt_out" {{ old('pension_status', $employee->pension_status) == 'opt_out' ? 'selected' : '' }}>Opt Out</option>
+        <option value="enroll_optout" {{ old('pension_status', $employee->pension_status) == 'enroll_optout' ? 'selected' : '' }}>Enroll & Opt Out</option>
+    </select>
+    @if ($errors->has('pension_status'))
+        <span class="text-danger">{{ $errors->first('pension_status') }}</span>
+    @endif
+</div>
+</div>
+
+
+
+                        <div class="row mb-4">
                             <div class="col-sm-12">
                                 <label for="inputAddress">Address</label>
                                 <textarea class="form-control" id="inputAddress" name="address" placeholder="Enter Address">{{ old('address', $employee->address) }}</textarea>

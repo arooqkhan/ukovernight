@@ -119,15 +119,33 @@
                     </div>
                 </div>
 
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label for="inputemgrNumber">Emergency Number</label>
-                        <input type="text" class="form-control" id="inputemgrNumber" name="emgr_number" placeholder="Emergency Number" value="{{ old('emgr_number') }}" required>
-                        @if ($errors->has('emgr_number'))
-                        <span class="text-danger">{{ $errors->first('emgr_number') }}</span>
-                        @endif
-                    </div>
-                </div>
+              <div class="row mb-4">
+    <!-- Emergency Number (6 col) -->
+    <div class="col-sm-6">
+        <label for="inputemgrNumber">Emergency Number</label>
+        <input type="text" class="form-control" id="inputemgrNumber" name="emgr_number"
+               placeholder="Emergency Number" value="{{ old('emgr_number') }}" required>
+        @if ($errors->has('emgr_number'))
+            <span class="text-danger">{{ $errors->first('emgr_number') }}</span>
+        @endif
+    </div>
+
+    <!-- Pension Status (6 col) -->
+    <div class="col-sm-6">
+        <label for="inputPensionStatus">Pension Status</label>
+        <select class="form-control" id="inputPensionStatus" name="pension_status" required>
+            <option value="">Select Pension Status</option>
+            <option value="enroll" {{ old('pension_status') == 'enroll' ? 'selected' : '' }}>Enroll</option>
+            <option value="notenroll" {{ old('pension_status') == 'notenroll' ? 'selected' : '' }}>Not Enroll</option>
+            <option value="opt_out" {{ old('pension_status') == 'opt_out' ? 'selected' : '' }}>Opt Out</option>
+            <option value="enroll_optout" {{ old('pension_status') == 'enroll_optout' ? 'selected' : '' }}>Enroll & Opt Out</option>
+        </select>
+        @if ($errors->has('pension_status'))
+            <span class="text-danger">{{ $errors->first('pension_status') }}</span>
+        @endif
+    </div>
+</div>
+
 
                 <div class="row mb-4">
                     <div class="col-sm-6">

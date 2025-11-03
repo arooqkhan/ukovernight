@@ -4,7 +4,7 @@
 <form action="{{ route('payslip.generate', ['employee' => $employeeId, 'first_name' => $firstName, 'last_name' => $lastName]) }}" method="GET">
     <div class="row">
         <!-- Employee Information -->
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="employee">Employee Name:</label>
             <select id="employee" name="employee" class="form-control">
                 <option value="{{ $employeeId }}">
@@ -14,7 +14,7 @@
         </div>
 
         <!-- Month Selection -->
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="month">Select Month:</label>
             <select id="month" name="month" class="form-control">
                 @php
@@ -23,23 +23,46 @@
                 @endphp
 
                 @for ($i = 1; $i <= $currentMonth; $i++)
-                    <option value="{{ $i }}" {{ old('month') == $i ? 'selected' : '' }}>
-                        {{ DateTime::createFromFormat('!m', $i)->format('F') }} {{ $currentYear }}
+                    <option value="{{ $i }}" {{ request('month') == $i ? 'selected' : '' }}>
+                        {{ DateTime::createFromFormat('!m', $i)->format('F') }}
                     </option>
                 @endfor
             </select>
         </div>
+
+        <!-- Year Selection -->
+        <div class="form-group col-md-4">
+            <label for="year">Select Year:</label>
+            <select id="year" name="year" class="form-control">
+                @if(isset($years) && is_array($years))
+                    @foreach($years as $y)
+                        <option value="{{ $y }}" {{ request('year') == $y ? 'selected' : ($y == $currentYear ? 'selected' : '') }}>
+                            {{ $y }}
+                        </option>
+                    @endforeach
+                @else
+                    {{-- Fallback: show current year --}}
+                    <option value="{{ $currentYear }}" selected>{{ $currentYear }}</option>
+                @endif
+            </select>
+        </div>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-2">view Payslip</button>
+    <button type="submit" class="btn btn-primary mt-2">View Payslip</button>
     <a href="javascript:void(0)" onclick="history.back()" class="btn btn-success mt-2">Back</a>
 </form>
 
-
 <!-- Show matching PDFs if any -->
-@if(!empty($matchingPdfs))
+@if(!empty($matchingPdfs) && count($matchingPdfs) > 0)
     <div class="mt-4">
-        <h4>Payslip For  {{ $selectedMonthName }}</h4>
+ <h4>
+    @if($selectedMonthName || $selectedYear)
+        Payslip For {{ $selectedMonthName ?? '' }} {{ $selectedYear ?? '' }}
+    @else
+        All Payslips
+    @endif
+</h4>
+
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -64,4 +87,4 @@
         <h5>{{ $notFoundMessage }}</h5>
     </div>
 @endif
-@endsection     
+@endsection

@@ -10,34 +10,34 @@
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         z-index: 1000;
     }
-    
+
     .sidebar-wrapper::-webkit-scrollbar {
         width: 5px;
     }
-    
+
     .sidebar-wrapper::-webkit-scrollbar-track {
         background: rgba(255, 255, 255, 0.1);
     }
-    
+
     .sidebar-wrapper::-webkit-scrollbar-thumb {
         background: rgba(255, 255, 255, 0.3);
         border-radius: 10px;
     }
-    
+
     .nav-logo {
         padding: 8px 7px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
+
     .nav-logo h4 {
         color: white;
         font-weight: 700;
         margin: 0;
         font-size: 1.5rem;
     }
-    
-    
-    
+
+
+
     .user-info::before {
         content: '';
         position: absolute;
@@ -47,24 +47,24 @@
         height: 1px;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     }
-    
-   
-    
+
+
+
     .profile-img:hover {
         border-color: rgba(255, 255, 255, 0.6);
         transform: scale(1.05);
     }
-    
+
     .profile-img img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
-    
+
     .profile-content {
         flex: 1;
     }
-    
+
     .profile-content h6 {
         margin: 0;
         font-weight: 700;
@@ -73,7 +73,7 @@
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         letter-spacing: 0.5px;
     }
-    
+
     .profile-content p {
         margin: 5px 0 0;
         font-size: 0.85rem;
@@ -86,118 +86,129 @@
         backdrop-filter: blur(5px);
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
+
     /* Animation for profile section */
     @keyframes profileGlow {
-        0% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4); }
-        70% { box-shadow: 0 0 0 10px rgba(74, 144, 226, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0); }
+        0% {
+            box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(74, 144, 226, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+        }
     }
-    
+
     .user-info {
         animation: profileGlow 2s infinite;
     }
-    
+
     .menu-categories {
         padding: 15px 0;
     }
-    
+
     .menu {
         margin-bottom: 5px;
     }
-    
+
     .menu a {
         display: flex;
         align-items: center;
         padding: 12px 20px;
-        color: white !important; /* Force white color */
+        color: white !important;
+        /* Force white color */
         transition: all 0.3s ease;
         text-decoration: none;
         border-left: 3px solid transparent;
     }
-    
-    .menu a:hover, 
-    .menu a:focus, 
+
+    .menu a:hover,
+    .menu a:focus,
     .menu a.active {
         background: rgba(255, 255, 255, 0.15);
         color: white !important;
         border-left: 3px solid #4CAF50;
         text-decoration: none;
     }
-    
+
     .menu a div {
         display: flex;
         align-items: center;
     }
-    
+
     .menu svg {
         width: 20px;
         height: 20px;
         margin-right: 15px;
-        color: white !important; /* Force white color for icons */
+        color: white !important;
+        /* Force white color for icons */
         opacity: 0.9;
     }
-    
+
     .menu a:hover svg,
     .menu a:focus svg,
     .menu a.active svg {
         opacity: 1;
         color: white !important;
     }
-    
+
     .menu span {
         font-weight: 500;
         font-size: 0.95rem;
-        color: white !important; /* Force white color for text */
+        color: white !important;
+        /* Force white color for text */
     }
-    
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .sidebar-wrapper {
             width: 70px !important;
         }
-        
-        .nav-logo h4, 
-        .profile-content, 
+
+        .nav-logo h4,
+        .profile-content,
         .menu span {
             display: none;
         }
-        
+
         .profile-img {
             margin-right: 0;
         }
-        
+
         .menu a {
             justify-content: center;
             padding: 15px;
         }
-        
+
         .menu svg {
             margin-right: 0;
         }
     }
 
-      .profile-info {
+    .profile-info {
         padding: 20px 15px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background:  linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)!important;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
         margin: 10px 15px;
         border-radius: 12px;
         backdrop-filter: blur(10px);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
-    
+
     .user-info {
         display: flex;
         align-items: center;
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)!important;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
         padding: 15px;
         border-radius: 10px;
         border: 1px solid rgba(255, 255, 255, 0.2);
         position: relative;
         overflow: hidden;
     }
-    
+
     .user-info::before {
         content: '';
         position: absolute;
@@ -207,11 +218,11 @@
         height: 1px;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     }
-    
+
     .profile-img:hover img {
         transform: scale(1.1);
     }
-    
+
     /* Fallback for broken images */
     .profile-img img[src=""],
     .profile-img img:not([src]) {
@@ -223,7 +234,7 @@
         font-size: 24px;
         font-weight: bold;
     }
-    
+
     .profile-img img[src=""]::after,
     .profile-img img:not([src])::after {
         content: "👤";
@@ -233,12 +244,13 @@
         width: 100%;
         height: 100%;
     }
-    
+
     .profile-content {
         flex: 1;
-        min-width: 0; /* Prevents text overflow */
+        min-width: 0;
+        /* Prevents text overflow */
     }
-    
+
     .profile-content h6 {
         margin: 0;
         font-weight: 700;
@@ -250,7 +262,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    
+
     .profile-content p {
         margin: 8px 0 0;
         font-size: 0.85rem;
@@ -268,113 +280,121 @@
         text-overflow: ellipsis;
         max-width: 100%;
     }
-    
+
     /* Animation for profile section */
     @keyframes profileGlow {
-        0% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4); }
-        70% { box-shadow: 0 0 0 10px rgba(74, 144, 226, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0); }
+        0% {
+            box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(74, 144, 226, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+        }
     }
-    
+
     .user-info {
         animation: profileGlow 2s infinite;
     }
-    
+
     /* Responsive design for profile */
     @media (max-width: 768px) {
         .profile-info {
             margin: 10px;
             padding: 15px;
         }
-        
+
         .profile-img {
             width: 50px;
             height: 50px;
             margin-right: 12px;
         }
-        
+
         .profile-content h6 {
             font-size: 1rem;
         }
-        
+
         .profile-content p {
             font-size: 0.8rem;
             padding: 4px 10px;
         }
     }
 
-/* Sidebar scrollbar - professional style */
-.sidebar-wrapper {
-    overflow-y: auto; /* Only this div scrolls */
-}
+    /* Sidebar scrollbar - professional style */
+    .sidebar-wrapper {
+        overflow-y: auto;
+        /* Only this div scrolls */
+    }
 
-/* Track (background) */
-.sidebar-wrapper::-webkit-scrollbar {
-    width: 8px; /* thinner scrollbar */
-}
+    /* Track (background) */
+    .sidebar-wrapper::-webkit-scrollbar {
+        width: 8px;
+        /* thinner scrollbar */
+    }
 
-.sidebar-wrapper::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1); /* subtle track */
-    border-radius: 10px;
-}
+    .sidebar-wrapper::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        /* subtle track */
+        border-radius: 10px;
+    }
 
-/* Thumb (the draggable part) */
-.sidebar-wrapper::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2); /* subtle, blends with sidebar */
-    border-radius: 10px;
-    transition: background 0.3s ease;
-}
+    /* Thumb (the draggable part) */
+    .sidebar-wrapper::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        /* subtle, blends with sidebar */
+        border-radius: 10px;
+        transition: background 0.3s ease;
+    }
 
-/* Thumb hover effect */
-.sidebar-wrapper::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4); /* stands out on hover */
-}
+    /* Thumb hover effect */
+    .sidebar-wrapper::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.4);
+        /* stands out on hover */
+    }
 
-/* Optional: minimal scrollbar for Firefox */
-.sidebar-wrapper {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255,255,255,0.2) rgba(0,0,0,0.1);
-}
-
-
-
+    /* Optional: minimal scrollbar for Firefox */
+    .sidebar-wrapper {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.1);
+    }
 </style>
 
-<div class="sidebar-wrapper sidebar-theme" style="width: 274px;">
+<div class="sidebar-wrapper sidebar-theme" style="width: 260px;">
     <nav id="sidebar">
-        <div class="navbar-nav">
+        <!-- <div class="navbar-nav">
             <div class="nav-logo">
-<<<<<<< HEAD
+
                 <h4 class="text-center mt-2">UK Overnight</h4>
-=======
-                <h4 class="text-center mt-2">The FanServices</h4>
->>>>>>> 3b7a978bb23a960f14109a463d57bd3e5d10d8f6
+
+            </div>
+        </div> -->
+
+        <div class="profile-info">
+            <div class="user-info">
+                <div class="profile-img">
+                    @if (Auth::user()->image && file_exists(public_path(Auth::user()->image)))
+                    <img src="{{ asset(Auth::user()->image) }}" alt="{{ auth()->user()->name }}" onerror="this.src='{{ asset('images/dummy.jpg') }}'" style="width: 60px; height: 60px;">
+                    @else
+                    <img src="{{ asset('images/dummy.jpg') }}" alt="{{ auth()->user()->name }}">
+                    @endif
+                </div>
+                <div class="profile-content">
+                    @if(auth()->check())
+                    <h6 class="text-white">{{ auth()->user()->name }}</h6>
+                    @endif
+                    <p class="text-white">
+                        @if (auth()->user()->role == 0)
+                        HR
+                        @else
+                        {{ auth()->user()->role }}
+                        @endif
+                    </p>
+                </div>
             </div>
         </div>
-        
-      <div class="profile-info">
-    <div class="user-info">
-        <div class="profile-img">
-            @if (Auth::user()->image && file_exists(public_path(Auth::user()->image)))
-            <img src="{{ asset(Auth::user()->image) }}" alt="{{ auth()->user()->name }}" onerror="this.src='{{ asset('images/dummy.jpg') }}'" style="width: 60px; height: 60px;">
-            @else
-            <img src="{{ asset('images/dummy.jpg') }}" alt="{{ auth()->user()->name }}">
-            @endif
-        </div>
-        <div class="profile-content">
-            @if(auth()->check())
-            <h6 class="text-white">{{ auth()->user()->name }}</h6>
-            @endif
-            <p class="text-white">
-                @if (auth()->user()->role == 0)
-                HR
-                @else
-                {{ auth()->user()->role }}
-                @endif
-            </p>
-        </div>
-    </div>
-</div>
 
         <ul class="list-unstyled menu-categories">
             <li class="menu">
@@ -416,7 +436,7 @@
                             <line x1="6" y1="14" x2="14" y2="14"></line>
                             <line x1="6" y1="18" x2="14" y2="18"></line>
                         </svg>
-                        <span>Employee Document</span>
+                        <span>EmployeeDocument</span>
                     </div>
                 </a>
             </li>
@@ -556,9 +576,9 @@
             <li class="menu">
                 <a href="{{ route('branch.index') }}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('branch.index') ? 'active' : '' }}">
                     <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="feather feather-git-branch">
                             <line x1="6" y1="3" x2="6" y2="15"></line>
                             <circle cx="18" cy="6" r="3"></circle>
@@ -569,13 +589,13 @@
                     </div>
                 </a>
             </li>
-
+                        
             <li class="menu">
                 <a href="{{route('onboarding.index')}}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('onboarding.index') ? 'active' : '' }}">
                     <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="feather feather-user-check">
                             <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
                             <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
@@ -586,7 +606,33 @@
                     </div>
                 </a>
             </li>
-            @endif
+          
+
+
+            <li class="menu">
+    <a href="{{ route('pensions.index') }}" 
+       aria-expanded="false" 
+       class="dropdown-toggle {{ request()->routeIs('pensions.index') ? 'active' : '' }}">
+        <div class="">
+            <!-- Pension Icon (Dollar Coin / Savings Style) -->
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 width="24" height="24" viewBox="0 0 24 24" 
+                 fill="none" stroke="currentColor" 
+                 stroke-width="2" stroke-linecap="round" 
+                 stroke-linejoin="round" 
+                 class="feather feather-piggy-bank">
+                <path d="M5 11c1.5-4.5 6.5-4.5 8 0h4a2 2 0 0 1 2 2v3h-2l-1 3h-9l-1-3H3v-3a2 2 0 0 1 2-2z"></path>
+                <circle cx="16" cy="8" r="1"></circle>
+            </svg>
+            <span>Pension Status</span>
+        </div>
+    </a>
+</li>
+
+
+  @endif
+
+
 
             <li class="menu">
                 <a href="{{route('contacts')}}" aria-expanded="false" class="dropdown-toggle {{ request()->routeIs('contacts') ? 'active' : '' }}">
@@ -600,16 +646,20 @@
                 </a>
             </li>
 
-            <li class="menu">
-                <a href="{{ route('logout') }}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out">
-                            <path d="M10 17l5-5-5-5M15 12H3" />
-                        </svg>
-                        <span>Logout</span>
-                    </div>
-                </a>
-            </li>
+           <li class="menu">
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+
+    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-toggle">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out">
+                <path d="M10 17l5-5-5-5M15 12H3" />
+            </svg>
+            <span>Logout</span>
+        </div>
+    </a>
+</li>
         </ul>
     </nav>
 </div>

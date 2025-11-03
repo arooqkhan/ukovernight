@@ -19,6 +19,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PayRollController;
 use App\Http\Controllers\PaySlipController;
+use App\Http\Controllers\PensionController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExpenseConttroller;
@@ -195,6 +196,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
    
 
     Route::get('payroll/download/{id}/{month}/{year}', [PayRollController::class, 'download'])->name('payroll.download');
+
+
+     //pension
+
+     Route::get('pension-status', [PensionController::class, 'index'])->name('pensions.index');
 
 
     // Contacts route

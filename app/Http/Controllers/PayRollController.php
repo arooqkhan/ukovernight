@@ -105,25 +105,88 @@ class PayRollController extends Controller
 
  
 
-     public function show($payrollId, $employeeId, $firstName, $lastName)
-     {
-    
-         // Get the current year and month
-         $currentYear = Carbon::now()->year;
-         $currentMonth = Carbon::now()->month;
-     
-         // Generate a list of months from January to the current month
-         $months = [];
-         for ($m = 1; $m <= $currentMonth; $m++) {
-             $months[] = Carbon::createFromDate($currentYear, $m, 1)->format('F'); // Full month name
-         }
+  public function show($payrollId, $employeeId, $firstName, $lastName, Request $request)
+    {
+        $currentYear = \Carbon\Carbon::now()->year;
 
-         $employees = Employee::all();
-     
-         // Pass the data to the view
-         return view('admin.pages.payroll.show', compact('employeeId', 'currentYear', 'months','employees','firstName','lastName'));
-     }
-     
+        // Months list
+        $months = [];
+        for ($m = 1; $m <= 12; $m++) {
+            $months[$m] = \Carbon\Carbon::createFromDate($currentYear, $m, 1)->format('F');
+        }
+
+        // Last 5 years
+        $years = [];
+        for ($y = 0; $y < 5; $y++) {
+            $years[] = $currentYear - $y;
+        }
+
+        $employees = Employee::all();
+
+        $selectedMonth = $request->month ? (int) $request->month : null;
+        $selectedYear = $request->year ? (int) $request->year : null;
+        $selectedMonthName = $selectedMonth ? \Carbon\Carbon::createFromDate($currentYear, $selectedMonth, 1)->format('F') : null;
+
+        // Fetch all payslips
+        $employeeModel = Employee::find($employeeId);
+        $payslipUploads = \App\Models\PayslipUpload::all();
+        $matchingPdfs = [];
+
+        foreach ($payslipUploads as $upload) {
+            $pdfPaths = is_array($upload->pdfs) ? $upload->pdfs : json_decode($upload->pdfs, true);
+            if (!is_array($pdfPaths)) continue;
+
+            foreach ($pdfPaths as $pdfPath) {
+                $filename = basename($pdfPath);
+                $nameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
+                $parts = preg_split('/[_\-]/', $nameWithoutExt);
+                $employeeIdFromPdf = $parts[0];
+
+                if ($employeeModel->employee_id == $employeeIdFromPdf) {
+                    // Check month/year filter if selected
+                    $pdfMonth = \Carbon\Carbon::parse($upload->created_at)->month;
+                    $pdfYear = \Carbon\Carbon::parse($upload->created_at)->year;
+
+                    if ($selectedMonth && $selectedYear) {
+                        if ($pdfMonth == $selectedMonth && $pdfYear == $selectedYear) {
+                            $matchingPdfs[] = $pdfPath;
+                        }
+                    } elseif ($selectedMonth) {
+                        if ($pdfMonth == $selectedMonth) {
+                            $matchingPdfs[] = $pdfPath;
+                        }
+                    } elseif ($selectedYear) {
+                        if ($pdfYear == $selectedYear) {
+                            $matchingPdfs[] = $pdfPath;
+                        }
+                    } else {
+                        // No filter selected → show all
+                        $matchingPdfs[] = $pdfPath;
+                    }
+                }
+            }
+        }
+
+        // Not found message if month/year selected but no PDF
+        $notFoundMessage = null;
+        if (($selectedMonth || $selectedYear) && empty($matchingPdfs)) {
+            $notFoundMessage = "No payslips found for " . ($selectedMonthName ? $selectedMonthName . ' ' : '') . ($selectedYear ?? '');
+        }
+
+        return view('admin.pages.payroll.show', compact(
+            'employeeId',
+            'currentYear',
+            'months',
+            'years',
+            'employees',
+            'firstName',
+            'lastName',
+            'matchingPdfs',
+            'selectedMonthName',
+            'selectedYear',
+            'notFoundMessage'
+        ));
+    }
      
 
 
@@ -181,64 +244,124 @@ class PayRollController extends Controller
 
 
 
-    public function generate(Request $request, $employeeId, $firstName, $lastName)
+       public function generate(Request $request, $employeeId, $firstName, $lastName)
     {
-        
-        // Validate the form inputs
+        // Validate request
         $request->validate([
             'employee' => 'required|exists:employees,id',
-            'month' => 'required',
+            'month' => 'nullable|integer|min:1|max:12',
+            'year' => 'nullable|integer',
         ]);
-    
-        // Fetch the selected employee based on their ID
-        $employee = Employee::find($request->employee);
-    
-        // Fetch all payslip uploads
-        $payslipUploads = PayslipUpload::all();
-    
-        // Initialize an empty array for matching PDFs
+
+        // Build last 5 years for dropdown
+        $currentYear = \Carbon\Carbon::now()->year;
+        $years = [];
+        for ($y = 0; $y < 5; $y++) {
+            $years[] = $currentYear - $y;
+        }
+
+        // Fetch selected employee
+        $employee = \App\Models\Employee::find($request->employee);
+
+        // Selected filters
+        $selectedMonth = $request->month ? (int) $request->month : null;
+        $selectedYear = $request->year ? (int) $request->year : null;
+
+        // Fetch payslips
+        $payslipUploads = \App\Models\PayslipUpload::query()->get();
+
         $matchingPdfs = [];
-    
-        // Iterate through each payslip upload to decode the 'pdfs' field and check for matching files
+
         foreach ($payslipUploads as $payslipUpload) {
-            // Decode the JSON data in the 'pdfs' column
-            $pdfPaths = json_decode($payslipUpload->pdfs, true);
-    
-            // Check if the month matches the selected month
-            if ($payslipUpload->month === $request->month) {
-                // Loop through each PDF path to find matches by basename
-                foreach ($pdfPaths as $pdfPath) {
-                    $filename = basename($pdfPath);  // Extract just the filename (e.g., EMP01.pdf)
-                    $employeeIdFromPdf = pathinfo($filename, PATHINFO_FILENAME); // Extract employee_id (e.g., EMP01)
-    
-                    // Check if the employee_id in the filename matches the current employee's ID
-                    if ($employee->employee_id == $employeeIdFromPdf) {
-                        // If it matches, add to matching PDFs array
+            $pdfPaths = is_array($payslipUpload->pdfs)
+                ? $payslipUpload->pdfs
+                : json_decode($payslipUpload->pdfs, true);
+
+            if (!is_array($pdfPaths)) continue;
+
+            foreach ($pdfPaths as $pdfPath) {
+                $filename = basename($pdfPath);
+                $nameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
+                $parts = preg_split('/[_\-]/', $nameWithoutExt);
+
+                $employeeIdFromPdf = $parts[0];
+                $fileYear = isset($parts[1]) && is_numeric($parts[1]) ? (int)$parts[1] : null;
+
+                // Match employee
+                if ($employee->employee_id == $employeeIdFromPdf) {
+                    $isMatch = true;
+
+                    // Month filter
+                    if ($selectedMonth) {
+                        $isMatch = $isMatch && (\Carbon\Carbon::parse($payslipUpload->created_at)->month == $selectedMonth);
+                    }
+
+                    // Year filter
+                    if ($selectedYear) {
+                        if (\Schema::hasColumn('payslip_uploads', 'year')) {
+                            $isMatch = $isMatch && ($payslipUpload->year == $selectedYear);
+                        } elseif ($fileYear !== null) {
+                            $isMatch = $isMatch && ($fileYear == $selectedYear);
+                        } else {
+                            // Use created_at as fallback
+                            $isMatch = $isMatch && (\Carbon\Carbon::parse($payslipUpload->created_at)->year == $selectedYear);
+                        }
+                    }
+
+                    if ($isMatch) {
                         $matchingPdfs[] = $pdfPath;
                     }
                 }
             }
         }
-    
-        // Convert the numeric month to a name
-        $monthName = DateTime::createFromFormat('!m', $request->month)->format('F');
-    
-        // Check if a search was performed and no PDFs matched
-        if ($request->has('employee') && $request->has('month') && empty($matchingPdfs)) {
-            $notFoundMessage = "No payslips found for the selected month of " . $monthName;
+
+        // For month name display
+        $monthName = $selectedMonth
+            ? \DateTime::createFromFormat('!m', $selectedMonth)->format('F')
+            : null;
+
+        // If searched but no result
+        if (($selectedMonth || $selectedYear) && empty($matchingPdfs)) {
+            $notFoundMessage = "No payslips found for " .
+                ($monthName ? $monthName . ' ' : '') . ($selectedYear ?? '');
         }
-    
-        // Pass data to the view
+
+        // If no filters, show all payslips for employee
+        if (!$selectedMonth && !$selectedYear && empty($matchingPdfs)) {
+            foreach ($payslipUploads as $payslipUpload) {
+                $pdfPaths = is_array($payslipUpload->pdfs)
+                    ? $payslipUpload->pdfs
+                    : json_decode($payslipUpload->pdfs, true);
+
+                if (!is_array($pdfPaths)) continue;
+
+                foreach ($pdfPaths as $pdfPath) {
+                    $filename = basename($pdfPath);
+                    $nameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
+                    $parts = preg_split('/[_\-]/', $nameWithoutExt);
+                    $employeeIdFromPdf = $parts[0];
+
+                    if ($employee->employee_id == $employeeIdFromPdf) {
+                        $matchingPdfs[] = $pdfPath;
+                    }
+                }
+            }
+        }
+
+        // Return view
         return view('admin.pages.payroll.show', [
-            'employees' => Employee::all(),  // Pass the employee list for the dropdown
-            'matchingPdfs' => $matchingPdfs, // Pass matching PDFs for display
-            'notFoundMessage' => $notFoundMessage ?? null, // Pass not found message if applicable
-            'employeeId' => $employeeId,      // Pass employeeId
-            'firstName' => $firstName,        // Pass firstName
-            'lastName' => $lastName,          // Pass lastName
-            'selectedMonthName' => $monthName // Pass the selected month name directly
+            'employees' => \App\Models\Employee::all(),
+            'matchingPdfs' => $matchingPdfs,
+            'notFoundMessage' => $notFoundMessage ?? null,
+            'employeeId' => $employeeId,
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'selectedMonthName' => $monthName,
+            'selectedYear' => $selectedYear,
+            'years' => $years, // ✅ Fixed
         ]);
     }
+
     
 
     
