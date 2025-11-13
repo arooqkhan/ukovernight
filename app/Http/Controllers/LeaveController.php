@@ -27,45 +27,44 @@ class LeaveController extends Controller
     }
 
    public function index()
+{ public function index(Request $request)
 {
     $user = auth()->user();
-    $currentMonth = now()->month;
-    $currentYear = now()->year;
 
-    if ($user->role === 'admin' || $user->role === 'HR' || $user->role === 'Accountant') {
-        // Admin can see all leaves
-        $leaves = Leave::with('employee')
-            ->orderBy('created_at', 'desc')
-            ->get();
-    } else {
-        // Employee can see only their own leaves
-        $leaves = Leave::with('employee')
-            ->where('employee_id', $user->employee_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+    $selectedMonth = $request->input('month');
+    $selectedYear = $request->input('year');
+
+    $query = Leave::with('employee');
+
+    if (!in_array($user->role, ['admin', 'HR', 'Accountant'])) {
+        $query->where('employee_id', $user->employee_id);
     }
 
-    // Determine if the leave is single or multi-day
+    // ✅ Apply month & year filters if selected
+    if ($selectedMonth && $selectedYear) {
+        $query->whereMonth('created_at', $selectedMonth)
+              ->whereYear('created_at', $selectedYear);
+    } elseif ($selectedYear) {
+        $query->whereYear('created_at', $selectedYear);
+    } elseif ($selectedMonth) {
+        $query->whereMonth('created_at', $selectedMonth);
+    }
+
+    $leaves = $query->orderBy('created_at', 'desc')->get();
+
+    // ✅ Calculate leave days
     foreach ($leaves as $leave) {
-        // Check for single-day leave using the 'date' field
         if ($leave->date) {
             $leave->leave_days = 1;
-        } 
-        // If it's not a single-day leave, check for multi-day using 'start_date' and 'end_date'
-        elseif ($leave->start_date && $leave->end_date) {
-            // Convert start_date and end_date to Carbon instances
-            $startDate = Carbon::parse($leave->start_date);
-            $endDate = Carbon::parse($leave->end_date);
-            
-            $leave->leave_days = $startDate->diffInDays($endDate) + 1;
-        } 
-        // If neither single nor multi-day information is available, set leave_days to null
-        else {
+        } elseif ($leave->start_date && $leave->end_date) {
+            $leave->leave_days = Carbon::parse($leave->start_date)->diffInDays(Carbon::parse($leave->end_date)) + 1;
+        } else {
             $leave->leave_days = null;
         }
     }
 
-    return view('admin.pages.leave.index', compact('leaves'));
+    // Send selected filters to view
+    return view('admin.pages.leave.index', compact('leaves', 'selectedMonth', 'selectedYear'));
 }
 
 
