@@ -26,8 +26,8 @@ class LeaveController extends Controller
         $this->middleware('permission:status leave', ['only' => ['accept', 'reject']]);
     }
 
-   public function index()
-{ public function index(Request $request)
+ 
+ public function index(Request $request)
 {
     $user = auth()->user();
 
