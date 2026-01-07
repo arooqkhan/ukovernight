@@ -72,19 +72,28 @@
                         <td>{{ $branch->number }}</td>
                         <td>{{ $branch->address }}</td>
 
-
                         <td class="text-center">
-                            <a href="{{ route('branch.edit', $branch->id) }}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i>
-                            </a>
-
-                            <form action="{{ route('branch.destroy', $branch->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this expense?')">
-                                    <i class="fas fa-trash-alt"></i>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ $branch->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
                                 </button>
-                            </form>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $branch->id }}">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('branch.edit', $branch->id) }}">
+                                            <i class="fas fa-edit me-2"></i> Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('branch.destroy', $branch->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to remove this branch?')">
+                                                <i class="fas fa-trash-alt me-2"></i> Delete
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
 
                         </td>
                     </tr>

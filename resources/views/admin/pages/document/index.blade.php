@@ -202,22 +202,38 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            @can('update document')
-                            <a href="{{ route('document.edit', $document->id) }}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i>
-                            </a>
-
-                            @endcan
-                            <!-- <button href="javascript:void(0);" class="btn btn-info btn-sm" onclick="viewDocument('{{ $document->name }}', '{{ asset($document->document) }}')">
-                                <i class="fas fa-eye"></i>
-                            </button> -->
-                            <form action="{{ route('document.destroy', $document->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this document?')">
-                                    <i class="fas fa-trash-alt"></i>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ $document->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
                                 </button>
-                            </form>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $document->id }}">
+                                    @can('update document')
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('document.edit', $document->id) }}">
+                                            <i class="fas fa-edit me-2"></i> Edit
+                                        </a>
+                                    </li>
+                                    @endcan
+
+                                    <!-- View Document Link -->
+                                    <li>
+                                        <a class="dropdown-item" href="{{ asset($document->document) }}" target="_blank" rel="noopener noreferrer">
+                                            <i class="fas fa-eye me-2"></i> View
+                                        </a>
+                                    </li>
+
+                                    <!-- Delete Form -->
+                                    <li>
+                                        <form action="{{ route('document.destroy', $document->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to remove this document?')">
+                                                <i class="fas fa-trash-alt me-2"></i> Delete
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     @endforeach

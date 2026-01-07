@@ -132,40 +132,61 @@
                         <td>{{ $employee->employee_id }}</td>
                         <td>{{ $employee->role }}</td>
                         <td class="text-center">
-
-                            @if($employee->role !== 'admin')
-                            @can('update employee')
-                            <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            @endcan
-                            @endif
-
-                            <form action="{{ route('employee.destroy', $employee->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                @can('delete employee')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this employee?')">
-                                    <i class="fas fa-trash-alt"></i>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ $employee->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
                                 </button>
-                                @endcan
-                            </form>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $employee->id }}">
+                                    @if($employee->role !== 'admin')
+                                        @can('update employee')
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('employee.edit', $employee->id) }}">
+                                                <i class="fas fa-edit me-2"></i> Edit
+                                            </a>
+                                        </li>
+                                        @endcan
+                                    @endif
 
-                            <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-info btn-sm">
-                                <i class="fas fa-eye"></i>
-                            </a>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('employee.show', $employee->id) }}">
+                                            <i class="fas fa-eye me-2"></i> View Details
+                                        </a>
+                                    </li>
 
-                            <a href="{{ route('documents.showByEmployee', $employee->id) }}" class="btn btn-info btn-sm">
-                                <i class="fas fa-file-alt"></i> Documents
-                            </a>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('documents.showByEmployee', $employee->id) }}">
+                                            <i class="fas fa-file-alt me-2"></i> Documents
+                                        </a>
+                                    </li>
 
-                            <a href="{{ route('attendance.show', $employee->id) }}" class="btn btn-info btn-sm">
-                                <i class="fas fa-calendar-check"></i> Attendance
-                            </a>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('attendance.show', $employee->id) }}">
+                                            <i class="fas fa-calendar-check me-2"></i> Attendance
+                                        </a>
+                                    </li>
 
-                            <a href="{{ route('payroll.showWithEmployee', [0, $employee->id, $employee->first_name, $employee->last_name]) }}" class="btn btn-info btn-sm mx-1">
-                                <i class="fas fa-dollar-sign"></i> Payslip
-                            </a>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('payroll.showWithEmployee', [0, $employee->id, $employee->first_name, $employee->last_name]) }}">
+                                            <i class="fas fa-dollar-sign me-2"></i> Payslip
+                                        </a>
+                                    </li>
+
+                                    @if($employee->role !== 'admin')
+                                        @can('delete employee')
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <form action="{{ route('employee.destroy', $employee->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this employee?')">
+                                                    <i class="fas fa-trash-alt me-2"></i> Delete
+                                                </button>
+                                            </form>
+                                        </li>
+                                        @endcan
+                                    @endif
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     @empty
