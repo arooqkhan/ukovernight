@@ -1,82 +1,142 @@
 @extends('admin.master.main')
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Edit Shift</div>
 
-                <div class="card-body">
-                    @if(session('success'))
-                    <div id="successMessage" class="alert bg-success alert-dismissible text-white" role="alert">
-                        <span>{{ session('success') }}</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+@section('content')
+
+@include('admin.pages.partials.form-styles')
+
+<div class="form-container">
+    <div class="form-header">
+        <h3>
+            <i class="fas fa-clock"></i>
+            Edit Shift
+        </h3>
+        <a href="{{ route('shift.index') }}" class="btn">
+            <i class="fas fa-arrow-left me-2"></i>Back
+        </a>
                     </div>
-                    @endif
-                    <form action="{{ route('shift.update', $shift->id) }}" method="POST">
+
+    <div class="form-card">
+        <form action="{{ route('shift.update', $shift->id) }}" method="POST" id="shiftForm">
         @csrf
         @method('PUT')
 
-        <div class="form-group">
-            <label for="employee_id">Employee</label>
-            <select class="form-control" id="employee_id" name="employee_id" required>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group-wrapper">
+                        <label for="inputEmployeeId"><i class="fas fa-user me-2"></i>Employee Name</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-user"></i>
+                            <select class="form-control form-select" id="inputEmployeeId" name="employee_id" required>
                 <option value="">Select Employee</option>
                 @foreach($employees as $employee)
-                    <option value="{{ $employee->id }}" {{ $shift->employee_id == $employee->id ? 'selected' : '' }}>
+                                <option value="{{ $employee->id }}" {{ old('employee_id', $shift->employee_id) == $employee->id ? 'selected' : '' }}>
                         {{ $employee->first_name }} {{ $employee->last_name }}
                     </option>
                 @endforeach
             </select>
+                        </div>
+                        @if ($errors->has('employee_id'))
+                        <span class="text-danger">{{ $errors->first('employee_id') }}</span>
+                        @endif
+                    </div>
+                </div>
         </div>
 
-        <div class="form-group">
-            <label for="shift_type">Shift Type</label>
-            <select class="form-control" id="shift_type" name="shift_type" required>
-                <option value="morning" {{ $shift->shift_type == 'morning' ? 'selected' : '' }}>Morning</option>
-                <option value="evening" {{ $shift->shift_type == 'evening' ? 'selected' : '' }}>Evening</option>
-                <option value="night" {{ $shift->shift_type == 'night' ? 'selected' : '' }}>Night</option>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="shift_type"><i class="fas fa-calendar-alt me-2"></i>Shift Type</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-calendar-alt"></i>
+                            <select class="form-control form-select" id="shift_type" name="shift_type" required>
+                                <option value="">Select Shift Type</option>
+                                <option value="Morning" {{ old('shift_type', $shift->shift_type) == 'Morning' ? 'selected' : '' }}>Morning</option>
+                                <option value="Evening" {{ old('shift_type', $shift->shift_type) == 'Evening' ? 'selected' : '' }}>Evening</option>
+                                <option value="Night" {{ old('shift_type', $shift->shift_type) == 'Night' ? 'selected' : '' }}>Night</option>
             </select>
         </div>
-
-        <div class="form-group">
-            <label for="add_duty">Additional Duty</label>
-            <input type="text" class="form-control" id="add_duty" name="add_duty" value="{{ $shift->add_duty }}">
+                        @if ($errors->has('shift_type'))
+                        <span class="text-danger">{{ $errors->first('shift_type') }}</span>
+                        @endif
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="add_duty"><i class="fas fa-tasks me-2"></i>Additional Duty</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-tasks"></i>
+                            <input type="text" class="form-control" placeholder="Enter Additional Duty" id="add_duty" name="add_duty" value="{{ old('add_duty', $shift->add_duty) }}" required>
+                        </div>
+                        @if ($errors->has('add_duty'))
+                        <span class="text-danger">{{ $errors->first('add_duty') }}</span>
+                        @endif
+                    </div>
+                </div>
         </div>
 
-        <div class="form-group">
-            <label for="date">Date</label>
-            <input type="date" class="form-control" id="date" name="date" value="{{ $shift->date }}" required>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="date"><i class="fas fa-calendar me-2"></i>Date</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-calendar"></i>
+                            <input type="date" class="form-control" id="date" name="date" value="{{ old('date', $shift->date) }}" required>
+                        </div>
+                        @if ($errors->has('date'))
+                        <span class="text-danger">{{ $errors->first('date') }}</span>
+                        @endif
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="start_time"><i class="fas fa-clock me-2"></i>Start Time</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-clock"></i>
+                            <input type="time" class="form-control" id="start_time" name="start_time" value="{{ old('start_time', $shift->start_time) }}" required>
+                        </div>
+                        @if ($errors->has('start_time'))
+                        <span class="text-danger">{{ $errors->first('start_time') }}</span>
+                        @endif
+                    </div>
+                </div>
         </div>
 
-        <div class="form-group">
-            <label for="start_time">Start Time</label>
-            <input type="time" class="form-control" id="start_time" name="start_time" value="{{ $shift->start_time }}" required>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="end_time"><i class="fas fa-clock me-2"></i>End Time</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-clock"></i>
+                            <input type="time" class="form-control" id="end_time" name="end_time" value="{{ old('end_time', $shift->end_time) }}" required>
         </div>
-
-        <div class="form-group">
-            <label for="end_time">End Time</label>
-            <input type="time" class="form-control" id="end_time" name="end_time" value="{{ $shift->end_time }}" required>
+                        @if ($errors->has('end_time'))
+                        <span class="text-danger">{{ $errors->first('end_time') }}</span>
+                        @endif
         </div>
-
-        <div class="form-group">
-            <label for="end_time">Note</label>
-            <input type="text" class="form-control" id="node" name="node" value="{{ $shift->node }}" required>
         </div>
-
-<div class="form-group mt-5">
-
-    <button type="submit" class="btn btn-primary">Update Shift</button>
-    <a href="{{ route('shift.index') }}" class="btn btn-secondary">Cancel</a>
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="note"><i class="fas fa-sticky-note me-2"></i>Note</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-sticky-note"></i>
+                            <input type="text" placeholder="Enter Note" class="form-control" id="note" name="node" value="{{ old('node', $shift->node) }}" required>
 </div>
-</form>
-
-
-
-
-
+                        @if ($errors->has('node'))
+                        <span class="text-danger">{{ $errors->first('node') }}</span>
+                        @endif
                 </div>
             </div>
         </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-submit">
+                    <i class="fas fa-save me-2"></i>Update
+                </button>
+                <a href="{{ route('shift.index') }}" class="btn btn-back">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 

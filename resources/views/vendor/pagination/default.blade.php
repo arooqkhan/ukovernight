@@ -4,11 +4,11 @@
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li class="disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
-                    <span aria-hidden="true">&lsaquo;</span>
+                    <span aria-hidden="true" style="color: #ffffff !important; font-size: 1.4rem !important; font-weight: 700 !important;">&lt;</span>
                 </li>
             @else
                 <li>
-                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;</a>
+                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border-color: #667eea !important; color: #ffffff !important; font-size: 1.4rem !important; font-weight: 700 !important;">&lt;</a>
                 </li>
             @endif
 
@@ -34,11 +34,11 @@
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <li>
-                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')">&rsaquo;</a>
+                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border-color: #667eea !important; color: #ffffff !important; font-size: 1.4rem !important; font-weight: 700 !important;">&gt;</a>
                 </li>
             @else
                 <li class="disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
-                    <span aria-hidden="true">&rsaquo;</span>
+                    <span aria-hidden="true" style="color: #ffffff !important; font-size: 1.4rem !important; font-weight: 700 !important;">&gt;</span>
                 </li>
             @endif
         </ul>

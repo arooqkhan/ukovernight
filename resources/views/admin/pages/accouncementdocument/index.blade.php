@@ -14,16 +14,162 @@
     .modal-footer { background-color: #f8f9fa; padding: 20px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; text-align: right; }
 
     /* Filter Section Styles */
-    .filter-container { display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
-    .filter-container input[type="text"], .filter-container select { border-radius: 4px; padding: 6px; }
-    .filter-container label { font-weight: bold; cursor: pointer; color: #007bff; }
+    .filter-section {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin-bottom: 24px;
+    }
+
+    .filter-section .form-label {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .filter-section .form-control,
+    .filter-section select {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    .filter-section .form-control:focus,
+    .filter-section select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+    }
+
+    .filter-section .form-control::placeholder {
+        color: #94a3b8;
+    }
+
+    .filter-section .btn {
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .filter-section .btn-secondary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+    }
+
+    .filter-section .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        color: #ffffff;
+    }
+
+    .filter-dropdown-menu {
+        min-width: 400px;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border: 1px solid #e5e7eb;
+        margin-top: 8px !important;
+    }
+
+    .filter-dropdown-menu .form-label {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .filter-dropdown-menu .form-control,
+    .filter-dropdown-menu select {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        margin-bottom: 16px;
+    }
+
+    .filter-dropdown-menu .form-control:focus,
+    .filter-dropdown-menu select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+    }
+
+    .filter-dropdown-toggle {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .filter-dropdown-toggle:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        color: #ffffff;
+    }
+
+    .filter-dropdown-toggle:focus {
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        color: #ffffff;
+    }
+
+    .status-radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .status-radio-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+    }
+
+    .status-radio-option input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #667eea;
+    }
+
+    .status-radio-option label {
+        margin: 0;
+        cursor: pointer;
+        font-weight: 500;
+        color: #475569;
+        font-size: 0.9rem;
+    }
 
     /* Profile Image Styling */
     .profile-img { width: 50px; height: 50px; margin-right: 10px; object-fit: cover; border-radius: 50%; }
 </style>
 
 <div class="col-lg-12">
-<h4>Request Documents</h4>
+    <div class="d-flex justify-content-between align-items-center mb-3" style="padding-left: 10px; padding-top: 0;">
+        <div class="d-flex align-items-center">
+            <div class="me-3">
+                <i class="fas fa-file-request fa-2x" style="color: #1f2937;"></i>
+            </div>
+            <div>
+                <h4 class="mb-0" style="font-weight: 600; font-size: 1.5rem; color: #0f172a;">Request Documents</h4>
+                <p class="text-muted mb-0" style="font-size: 0.9rem;">Manage document requests and uploads</p>
+            </div>
+        </div>
+    </div>
+
     <div class="statbox widget box box-shadow">
         @if(session('success'))
         <script>
@@ -35,7 +181,8 @@
                     showConfirmButton: false,
                     timer: 3000,
                     toast: true,
-                    background: '#28a745'
+                    background: '#28a745',
+                    color: '#ffffff'
                 });
             });
         </script>
@@ -51,37 +198,75 @@
                     showConfirmButton: false,
                     timer: 3000,
                     toast: true,
-                    background: '#dc3545'
+                    background: '#dc3545',
+                    color: '#ffffff'
                 });
             });
         </script>
         @endif
 
         <div class="widget-content widget-content-area">
-           
+            <!-- Filter Toolbar -->
+            <div class="filter-section">
+                <div class="row align-items-center">
+                    <!-- Left: Primary actions -->
+                    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                        <div class="d-flex gap-2" style="flex-wrap: nowrap;">
             @can('create announcementsdocument')
-            <a href="{{ route('accouncementdocument.create') }}" class="btn btn-secondary m-2">Add Request Document</a>
+                            <a href="{{ route('accouncementdocument.create') }}" class="btn btn-secondary" style="white-space: nowrap;">
+                                <i class="fas fa-plus me-2"></i>Add Request Document
+                            </a>
             @endcan
-            <a href="javascript:void(0)" onclick="history.back()" class="btn btn-secondary">Back</a>
+                            <a href="javascript:void(0)" onclick="history.back()" class="btn btn-secondary" style="white-space: nowrap;">
+                                <i class="fas fa-arrow-left me-2"></i>Back
+                            </a>
+                        </div>
+                    </div>
 
-            <!-- Filter Section -->
             @if(auth()->user()->role == 'admin' || auth()->user()->role == 'HR' || auth()->user()->role == 'Accountant')
-            <div class="filter-container mt-4">
+                    <!-- Right: Filter Dropdown -->
+                    <div class="col-12 col-lg-6 d-flex justify-content-end">
+                        <div class="dropdown">
+                            <button class="btn filter-dropdown-toggle dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-filter me-2"></i>Filter
+                            </button>
+                            <div class="dropdown-menu filter-dropdown-menu" aria-labelledby="filterDropdown">
+                                <div class="px-2">
+                                    <label for="employeeSelect" class="form-label">Select Employee</label>
                 <select id="employeeSelect" class="form-control">
                     <option value="">Select Employee</option>
                     @foreach($employees as $employee)
                     <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}</option>
                     @endforeach
                 </select>
-                <input type="text" id="nameFilter" placeholder="Search by Name" class="form-control">
-                <input type="radio" id="uploadedFilter" name="statusFilter">
+                                </div>
+                                <div class="px-2">
+                                    <label for="nameFilter" class="form-label">Search by Name</label>
+                                    <input type="text" id="nameFilter" placeholder="e.g. John Doe" class="form-control">
+                                </div>
+                                <div class="px-2">
+                                    <label class="form-label">Show Status:</label>
+                                    <div class="status-radio-group">
+                                        <div class="status-radio-option">
+                                            <input type="radio" id="uploadedFilter" name="statusFilter" value="uploaded">
                 <label for="uploadedFilter">Show Uploaded</label>
-                <input type="radio" id="pendingFilter" name="statusFilter">
+                                        </div>
+                                        <div class="status-radio-option">
+                                            <input type="radio" id="pendingFilter" name="statusFilter" value="pending">
                 <label for="pendingFilter">Show Pending/Upload</label>
-                <input type="radio" id="bothFilter" name="statusFilter" checked>
+                                        </div>
+                                        <div class="status-radio-option">
+                                            <input type="radio" id="bothFilter" name="statusFilter" value="both" checked>
                 <label for="bothFilter">Show Both</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
             </div>
             @endif
+                </div>
+            </div>
             <table id="style-2" class="table style-2 dt-table-hover">
                 <thead>
                     <tr>

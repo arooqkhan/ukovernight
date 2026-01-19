@@ -19,38 +19,116 @@
         box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
     }
     
-    /* Table Styling */
+    /* Professional Table Styling */
     #style-2 {
-        border-radius: 8px;
+        border-radius: 12px;
         overflow: hidden;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        background: #ffffff;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
     }
     
     #style-2 thead th {
-        background-color: #f8f9fa;
+        background-color: #f8fafc;
+        color: #1e293b;
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.75rem;
         letter-spacing: 0.5px;
+        padding: 14px 18px;
+        border-bottom: 2px solid #e5e7eb;
+        text-align: left;
+        white-space: nowrap;
     }
     
     #style-2 tbody tr {
-        transition: background-color 0.2s;
+        transition: background-color 0.15s ease;
+        background-color: #ffffff;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    
+    #style-2 tbody tr:last-child {
+        border-bottom: none;
     }
     
     #style-2 tbody tr:hover {
-        background-color: #f8f9fa;
+        background-color: #f8fafc;
     }
     
-    /* Badge Styling */
-  .badge {
-    padding: 0.5em 0.8em;
-    font-weight: 500;
-    border-radius: 4px;
-    color: white;
-    min-width: 80px;
-    text-align: center;
-    display: inline-block;
-  }
+    #style-2 tbody td {
+        padding: 14px 18px;
+        vertical-align: middle;
+        color: #475569;
+        font-size: 0.875rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    
+    #style-2 tbody tr:last-child td {
+        border-bottom: none;
+    }
+    
+    /* Dropdown Menu Styling */
+    .dropdown-menu {
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        padding: 4px 0;
+        margin-top: 4px;
+    }
+    
+    .dropdown-item {
+        padding: 10px 16px;
+        font-size: 0.875rem;
+        color: #475569;
+        transition: all 0.15s ease;
+        display: flex;
+        align-items: center;
+    }
+    
+    .dropdown-item:hover {
+        background-color: #f8fafc;
+        color: #1e293b;
+    }
+    
+    .dropdown-item.text-danger {
+        color: #dc2626;
+    }
+    
+    .dropdown-item.text-danger:hover {
+        background-color: #fee2e2;
+        color: #991b1b;
+    }
+    
+    .dropdown-divider {
+        margin: 4px 0;
+        border-color: #e5e7eb;
+    }
+    
+    /* Badge Styling - Only for leave page content, not header */
+    #style-2 .badge,
+    .modal-content .badge,
+    .form-card .badge {
+        padding: 0.5em 0.8em;
+        font-weight: 500;
+        border-radius: 4px;
+        color: white;
+        min-width: 80px;
+        text-align: center;
+        display: inline-block;
+    }
+    
+    /* Ensure header notification badge is not affected */
+    .header .badge,
+    .navbar .badge,
+    .notification-dropdown .badge {
+        padding: 0 !important;
+        min-width: auto !important;
+        text-align: left !important;
+        display: block !important;
+    }
     
     /* Button Styling */
     .btn-sm {
@@ -104,62 +182,72 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <div class="col-lg-12">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="m-0">Employee Leave Details</h4>
-        <a href="{{ route('leave.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus mr-1"></i> Apply Leave
+    <div class="d-flex justify-content-between align-items-center mb-3" style="padding-left: 10px; padding-top: 0;">
+        <div class="d-flex align-items-center">
+            <div class="me-3">
+                <i class="fas fa-calendar-alt fa-2x" style="color: #1f2937;"></i>
+            </div>
+            <div>
+                <h4 class="mb-0" style="font-weight: 600; font-size: 1.5rem; color: #0f172a;">Employee Leave</h4>
+                <p class="text-muted mb-0" style="font-size: 0.9rem;">Manage leave requests and approvals</p>
+            </div>
+        </div>
+        <a href="{{ route('leave.create') }}" class="btn btn-secondary">
+            <i class="fas fa-plus-circle me-2"></i> Apply Leave
         </a>
     </div>
-    <div class="statbox widget box box-shadow p-4">
+    <div class="statbox widget box box-shadow">
 
         {{-- ✅ SweetAlert Notifications --}}
-        @if(session('success'))
+        <meta name="flash-success" content="{{ session('success') }}">
+        <meta name="flash-error" content="{{ session('error') }}">
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    position: 'bottom-end',
-                    icon: 'success',
-                    title: '{{ session('success') }}',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    toast: true,
-                    background: '#28a745',
-                    customClass: { popup: 'small-swal-popup' }
-                });
+                var success = document.querySelector('meta[name="flash-success"]')?.getAttribute('content') || '';
+                var errorMsg = document.querySelector('meta[name="flash-error"]')?.getAttribute('content') || '';
+                if (success) {
+                    Swal.fire({
+                        position: 'bottom-end',
+                        icon: 'success',
+                        title: success,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        toast: true,
+                        background: '#10b981',
+                        color: '#ffffff',
+                        customClass: { popup: 'small-swal-popup' }
+                    });
+                }
+                if (errorMsg) {
+                    Swal.fire({
+                        position: 'bottom-end',
+                        icon: 'error',
+                        title: errorMsg,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        toast: true,
+                        background: '#ef4444',
+                        color: '#ffffff',
+                        customClass: { popup: 'small-swal-popup' }
+                    });
+                }
             });
         </script>
-        @endif
-
-        @if(session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    position: 'bottom-end',
-                    icon: 'error',
-                    title: '{{ session('error') }}',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    toast: true,
-                    background: '#dc3545',
-                    customClass: { popup: 'small-swal-popup' }
-                });
-            });
-        </script>
-        @endif
 
         <div class="widget-content widget-content-area">
 
-        <!-- Filter Section -->
-        <div class="card mb-4">
-            <div class="card-body p-3">
+        <!-- Executive Filter Section -->
+        <div class="card mb-3" style="border-radius: 12px; border: 1px solid #e5e7eb; background: #ffffff;">
+            <div class="card-body" style="padding: 12px 16px 16px 16px;">
                 <form action="{{ route('leave.index') }}" method="GET">
-                    <div class="row align-items-end">
-                        <div class="col-md-4 mb-2">
-                            <label for="month" class="form-label fw-bold small text-muted mb-1">MONTH</label>
-                            <select name="month" id="month" class="form-select">
+                    <div class="row align-items-end g-3">
+                        <div class="col-md-4">
+                            <label for="month" class="form-label fw-bold mb-2" style="color: #475569; font-size: 0.9rem;">
+                                <i class="fas fa-calendar me-2"></i>MONTH
+                            </label>
+                            <select name="month" id="month" class="form-select" style="border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px 16px;">
                                 <option value="">All Months</option>
                                 @for ($m = 1; $m <= 12; $m++)
                                     <option value="{{ $m }}" {{ (isset($selectedMonth) && $selectedMonth == $m) ? 'selected' : '' }}>
@@ -169,9 +257,11 @@
                             </select>
                         </div>
                         
-                        <div class="col-md-4 mb-2">
-                            <label for="year" class="form-label fw-bold small text-muted mb-1">YEAR</label>
-                            <select name="year" id="year" class="form-select">
+                        <div class="col-md-4">
+                            <label for="year" class="form-label fw-bold mb-2" style="color: #475569; font-size: 0.9rem;">
+                                <i class="fas fa-calendar-alt me-2"></i>YEAR
+                            </label>
+                            <select name="year" id="year" class="form-select" style="border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px 16px;">
                                 <option value="">All Years</option>
                                 @for ($y = date('Y'); $y >= date('Y') - 5; $y--)
                                     <option value="{{ $y }}" {{ (isset($selectedYear) && $selectedYear == $y) ? 'selected' : '' }}>
@@ -181,9 +271,9 @@
                             </select>
                         </div>
                         
-                        <div class="col-md-4 mb-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-search me-2"></i> Filter
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-secondary w-100">
+                                <i class="fas fa-search me-2"></i> Filter Results
                             </button>
                         </div>
                     </div>
@@ -195,7 +285,7 @@
 
             <!-- Leave Table -->
             <div class="table-responsive">
-                <table id="style-2" class="table table-hover">
+                <table id="style-2" class="table table-hover table-striped align-middle">
                     <thead class="table-light">
                         <tr>
                             <th class="text-nowrap">#ID</th>
@@ -204,7 +294,7 @@
                             <th>Date / Duration</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Days</th>
-                            <th class="text-end">Actions</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                 <tbody>
@@ -238,11 +328,17 @@
 
                         <td class="text-center">
                             @if($leave->status == 0)
-                                <span class="badge bg-warning">Pending</span>
+                                <span class="badge" style="background: #fff7ed; color: #92400e; padding: 6px 12px; border-radius: 6px; font-weight: 600;">
+                                    <i class="fas fa-clock me-1"></i>Pending
+                                </span>
                             @elseif($leave->status == 1)
-                                <span class="badge bg-success">Approved</span>
+                                <span class="badge" style="background: #e7f7ec; color: #166534; padding: 6px 12px; border-radius: 6px; font-weight: 600;">
+                                    <i class="fas fa-check-circle me-1"></i>Approved
+                                </span>
                             @elseif($leave->status == 2)
-                                <span class="badge bg-danger">Rejected</span>
+                                <span class="badge" style="background: #fef2f2; color: #991b1b; padding: 6px 12px; border-radius: 6px; font-weight: 600;">
+                                    <i class="fas fa-times-circle me-1"></i>Rejected
+                                </span>
                             @endif
                         </td>
 
@@ -252,39 +348,50 @@
                             </span>
                         </td>
 
-                        <td class="text-end">
-                            <div class="d-flex justify-content-end gap-1">
-                                @if($leave->status == 0)
-                                    @can('status leave')
-                                    <form action="{{ route('leave.accept', $leave->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to approve this leave request?');">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Approve">
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                    </form>
-
-                                    <form action="{{ route('leave.reject', $leave->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to reject this leave request?');">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Reject">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </form>
-                                    @endcan
-                                @endif
-
-                                @can('update leave')
-                                <button type="button" class="btn btn-sm btn-outline-info view-details-btn" data-bs-toggle="tooltip" title="View Details" data-bs-toggle="modal" data-bs-target="#viewDetailsModal" data-leave="{{ json_encode($leave) }}">
-                                    <i class="fas fa-eye"></i>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ $leave->id }}" data-bs-toggle="dropdown" aria-expanded="false" style="border: 2px solid #e2e8f0; color: #64748b; padding: 8px 14px; border-radius: 8px; background: #ffffff;">
+                                    <i class="fas fa-ellipsis-v"></i>
                                 </button>
-                                @endcan
-
-                                <form action="{{ route('leave.destroy', $leave->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this leave record?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $leave->id }}" style="border-radius: 10px; border: 1px solid #e5e7eb; box-shadow: 0 8px 24px rgba(0,0,0,0.08); min-width: 180px; padding: 4px 0;">
+                                    @if($leave->status == 0)
+                                        @can('status leave')
+                                        <li>
+                                            <form action="{{ route('leave.accept', $leave->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to approve this leave request?')">
+                                                    <i class="fas fa-check me-2 text-success"></i> Approve
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form action="{{ route('leave.reject', $leave->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to reject this leave request?')">
+                                                    <i class="fas fa-times me-2 text-danger"></i> Reject
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <li><hr class="dropdown-divider my-1"></li>
+                                        @endcan
+                                    @endif
+                                    @can('update leave')
+                                    <li>
+                                        <button type="button" class="dropdown-item view-details-btn" data-leave="{{ json_encode($leave) }}">
+                                            <i class="fas fa-eye me-2"></i> View Details
+                                        </button>
+                                    </li>
+                                    @endcan
+                                    <li>
+                                        <form action="{{ route('leave.destroy', $leave->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this leave record?')">
+                                                <i class="fas fa-trash-alt me-2"></i> Delete
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </div>
                         </td>
                     </tr>
@@ -404,24 +511,28 @@
 
         <style>
             /* Enhanced Modal Styling */
-            .modal-content {
+            #viewDetailsModal .modal-content {
                 border: none;
                 border-radius: 12px;
                 overflow: hidden;
+                background-color: #ffffff !important;
             }
             
-            .modal-header {
+            #viewDetailsModal .modal-header {
                 border-bottom: 1px solid rgba(0, 0, 0, 0.05);
                 padding: 1.25rem 1.5rem;
+                background-color: #ffffff !important;
             }
             
-            .modal-body {
+            #viewDetailsModal .modal-body {
                 padding: 1.5rem;
+                background-color: #ffffff !important;
             }
             
-            .modal-footer {
+            #viewDetailsModal .modal-footer {
                 padding: 1rem 1.5rem;
                 border-top: 1px solid rgba(0, 0, 0, 0.05);
+                background-color: #ffffff !important;
             }
             
             /* Card hover effect */
@@ -448,11 +559,8 @@
 
         <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
+            // Initialize modal
+            const viewDetailsModal = new bootstrap.Modal(document.getElementById('viewDetailsModal'));
             
             // Handle view details button click
             document.querySelectorAll('.view-details-btn').forEach(button => {
@@ -470,10 +578,11 @@
                     // Set employee image if available
                     const employeeImage = document.getElementById('modalEmployeeImage');
                     if (leave.employee && leave.employee.image) {
-                        employeeImage.src = leave.employee.image;
+                        employeeImage.src = '{{ asset("") }}' + leave.employee.image;
                         employeeImage.style.display = 'block';
                     } else {
                         employeeImage.src = '{{ asset("images/dummy.jpg") }}';
+                        employeeImage.style.display = 'block';
                     }
                     
                     // Set leave type and reason
@@ -507,13 +616,16 @@
                     const noDocumentElement = document.getElementById('noDocument');
                     
                     if (leave.image) {
-                        imageElement.src = leave.image;
+                        imageElement.src = '{{ asset("") }}' + leave.image;
                         imageElement.style.display = 'block';
                         noDocumentElement.style.display = 'none';
                     } else {
                         imageElement.style.display = 'none';
                         noDocumentElement.style.display = 'block';
                     }
+                    
+                    // Open the modal
+                    viewDetailsModal.show();
                 });
             });
             

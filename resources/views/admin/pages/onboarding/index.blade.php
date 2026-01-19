@@ -65,16 +65,24 @@
     }
 </style>
 
-<div class="col-lg-12">
-    <h4 class="ml-2">Employees Record</h4>
-    <div class="statbox widget box box-shadow">
         @if(session('success'))
+<meta name="flash-success" content="{{ session('success') }}">
+@endif
+@if(session('error'))
+<meta name="flash-error" content="{{ session('error') }}">
+@endif
+
         <script>
+    // Flash messages using meta tags
             document.addEventListener('DOMContentLoaded', function() {
+        const successMsg = document.querySelector('meta[name="flash-success"]');
+        const errorMsg = document.querySelector('meta[name="flash-error"]');
+        
+        if (successMsg) {
                 Swal.fire({
                     position: 'bottom-end',
                     icon: 'success',
-                    title: '{{ session('success') }}',
+                title: successMsg.getAttribute('content'),
                     showConfirmButton: false,
                     timer: 3000,
                     toast: true,
@@ -83,17 +91,13 @@
                         popup: 'small-swal-popup'
                     }
                 });
-            });
-        </script>
-        @endif
+        }
 
-        @if(session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+        if (errorMsg) {
                 Swal.fire({
                     position: 'bottom-end',
                     icon: 'error',
-                    title: '{{ session('error') }}',
+                title: errorMsg.getAttribute('content'),
                     showConfirmButton: false,
                     timer: 3000,
                     toast: true,
@@ -102,34 +106,49 @@
                         popup: 'small-swal-popup'
                     }
                 });
+        }
             });
         </script>
-        @endif
-        <div class="widget-content widget-content-area">
 
-        <table id="style-2" class="table style-2 dt-table-hover">
+<div class="col-lg-12">
+    <div class="d-flex justify-content-between align-items-center mb-3" style="padding-left: 10px; padding-top: 0;">
+        <div class="d-flex align-items-center">
+            <div class="me-3">
+                <i class="fas fa-users fa-2x" style="color: #1f2937;"></i>
+            </div>
+            <div>
+                <h4 class="mb-0" style="font-weight: 600; font-size: 1.5rem; color: #0f172a;">Employees Record</h4>
+                <p class="text-muted mb-0" style="font-size: 0.9rem;">Manage employee onboarding records</p>
+            </div>
+        </div>
+    </div>
+    <div class="statbox widget box box-shadow">
+        <div class="widget-content widget-content-area">
+            <table id="style-2" class="table table-striped align-middle style-2 dt-table-hover">
     <thead>
         <tr>
-            <th>ID</th>
+                        <th style="width: 60px;">ID</th>
             <th>Employee Name</th>
-            <th class="text-center">Actions</th>
+                        <th class="text-center" style="width: 100px;">Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach($employees as $employee)
         <tr>
-            <td>{{ $employee->id }}</td>
+                        <td><strong style="color: #0f172a;">#{{ $employee->id }}</strong></td>
             <td>
+                            <div class="d-flex align-items-center">
                 @if($employee->image)
-                    <img src="{{ asset($employee->image) }}" class="rounded-circle profile-img" style="width:50px;height:50px;margin-right:10px;">
+                                <img src="{{ asset($employee->image) }}" class="profile-img me-3" alt="Employee Image">
                 @else
-                    <img src="{{ asset('images/dummy.jpg') }}" class="rounded-circle profile-img" style="width:50px;height:50px;margin-right:10px;">
+                                <img src="{{ asset('images/dummy.jpg') }}" class="profile-img me-3" alt="Employee Image">
                 @endif
-                {{ $employee->first_name }} {{ $employee->last_name }}
+                                <strong style="color: #1e293b; font-weight: 600;">{{ $employee->first_name }} {{ $employee->last_name }}</strong>
+                            </div>
             </td>
             <td class="text-center">
-                <a href="{{ route('onboarding.edit', $employee->id) }}" class="btn btn-primary btn-sm">
-                    Edit
+                            <a href="{{ route('onboarding.edit', $employee->id) }}" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-edit me-1"></i>Edit
                 </a>
             </td>
         </tr>

@@ -78,18 +78,25 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<div class="col-lg-12">
-<h4>Latest Announcements</h4>
-    <div class="statbox widget box box-shadow">
         @if(session('success'))
+<meta name="flash-success" content="{{ session('success') }}">
+@endif
+@if(session('error'))
+<meta name="flash-error" content="{{ session('error') }}">
+@endif
+
         <script>
+    // Flash messages using meta tags
             document.addEventListener('DOMContentLoaded', function() {
+        const successMsg = document.querySelector('meta[name="flash-success"]');
+        const errorMsg = document.querySelector('meta[name="flash-error"]');
+        
+        if (successMsg) {
                 Swal.fire({
                     position: 'bottom-end',
                     icon: 'success',
-                    title: '{{ session('success') }}',
+                title: successMsg.getAttribute('content'),
                     showConfirmButton: false,
                     timer: 3000,
                     toast: true,
@@ -98,17 +105,13 @@
                         popup: 'small-swal-popup'
                     }
                 });
-            });
-        </script>
-        @endif
+        }
 
-        @if(session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+        if (errorMsg) {
                 Swal.fire({
                     position: 'bottom-end',
                     icon: 'error',
-                    title: '{{ session('error') }}',
+                title: errorMsg.getAttribute('content'),
                     showConfirmButton: false,
                     timer: 3000,
                     toast: true,
@@ -117,63 +120,85 @@
                         popup: 'small-swal-popup'
                     }
                 });
+        }
             });
         </script>
-        @endif
 
-        <div class="widget-content widget-content-area">
-            <div class="d-flex justify-content-end mb-2">
+<div class="col-lg-12">
+    <div class="d-flex justify-content-between align-items-center mb-3" style="padding-left: 10px; padding-top: 0;">
+        <div class="d-flex align-items-center">
+            <div class="me-3">
+                <i class="fas fa-bullhorn fa-2x" style="color: #1f2937;"></i>
+            </div>
+            <div>
+                <h4 class="mb-0" style="font-weight: 600; font-size: 1.5rem; color: #0f172a;">Latest Announcements</h4>
+                <p class="text-muted mb-0" style="font-size: 0.9rem;">Manage company announcements</p>
+            </div>
             </div>
             @can('create announcements')
-            <a href="{{ route('announcements.create') }}" class="btn btn-secondary m-2">Add Announcement</a>
+        <a href="{{ route('announcements.create') }}" class="btn btn-secondary">
+            <i class="fas fa-plus me-2"></i>Add Announcement
+        </a>
             @endcan
-            <table id="style-2" class="table style-2 dt-table-hover">
+    </div>
+    <div class="statbox widget box box-shadow">
+        <div class="widget-content widget-content-area">
+            <table id="style-2" class="table table-striped align-middle style-2 dt-table-hover">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th style="width: 60px;">ID</th>
                         <th>Title</th>
                         <th>Message</th>
                         <th>Date</th>
-                        <th class="text-center">Actions</th>
+                        <th class="text-center" style="width: 140px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($announcements as $announcement)
                     <tr>
-                        <td>{{ $announcement->id }}</td>
-                        <td>{{ $announcement->title }}</td>
+                        <td><strong style="color: #0f172a;">#{{ $announcement->id }}</strong></td>
+                        <td>
+                            <strong style="color: #1e293b; font-weight: 600;">{{ $announcement->title }}</strong>
+                        </td>
                       <td>
     <span data-toggle="tooltip" 
           data-placement="top" 
-          title="{{ $announcement->message }}">
-        {{ Str::limit($announcement->message, 20) }}{{ strlen($announcement->message) > 20 ? '...' : '' }}
+                                  title="{{ $announcement->message }}"
+                                  style="color: #475569; max-width: 300px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                {{ Str::limit($announcement->message, 50) }}{{ strlen($announcement->message) > 50 ? '...' : '' }}
     </span>
 </td>
-                        <td>{{ \Carbon\Carbon::parse($announcement->date)->format('Y-m-d') }}</td>
+                        <td style="color: #475569; font-weight: 500;">
+                            <i class="fas fa-calendar me-1" style="color: #64748b;"></i>{{ \Carbon\Carbon::parse($announcement->date)->format('M d, Y') }}
+                        </td>
                         <td class="text-center">
-                          
-
-                            <!-- Edit Button -->
-
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ $announcement->id }}" data-bs-toggle="dropdown" aria-expanded="false" style="border: 2px solid #e2e8f0; color: #64748b; padding: 8px 14px; border-radius: 8px; background: #ffffff;">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $announcement->id }}">
                             @can('update announcements')
-                            <a href="{{ route('announcements.edit', $announcement->id) }}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('announcements.edit', $announcement->id) }}">
+                                            <i class="fas fa-edit me-2"></i>Edit
                             </a>
+                                    </li>
                             @endcan
-
-                            <!-- Delete Form -->
-                            <form action="{{ route('announcements.destroy', $announcement->id) }}" method="POST" style="display:inline;">
+                                    @can('delete announcements')
+                                    <li>
+                                        <form action="{{ route('announcements.destroy', $announcement->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                @can('delete announcements')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this announcement?')">
-                                    <i class="fas fa-trash-alt"></i>
+                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to remove this announcement?')">
+                                                <i class="fas fa-trash-alt me-2"></i>Delete
                                 </button>
+                                        </form>
+                                    </li>
                                 @endcan
-                            </form>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
-
                     @endforeach
                 </tbody>
             </table>
@@ -183,7 +208,7 @@
 
 <script>
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"], [data-bs-toggle="tooltip"]').tooltip();
     });
 </script>
 

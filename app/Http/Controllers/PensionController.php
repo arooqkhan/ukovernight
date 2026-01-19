@@ -13,7 +13,7 @@ class PensionController extends Controller
   public function index()
 {
     // Employees table se required columns fetch karo
-    $employees = Employee::select('first_name', 'last_name', 'dob', 'pension_status')->get();
+    $employees = Employee::select('id', 'first_name', 'last_name', 'dob', 'pension_status', 'image', 'role', 'branch')->get();
 
     // Data ko view me send karo
     return view('admin.pages.pension.index', compact('employees'));

@@ -2,24 +2,30 @@
 
 @section('content')
 
-<div class="row">
-    <div id="flStackForm" class="col-lg-12 layout-spacing layout-top-spacing">
-        <div class="statbox widget box box-shadow">
+@include('admin.pages.partials.form-styles')
 
-            <div class="row">
-                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h3>Add Payroll</h3>
-                </div>
+<div class="form-container">
+    <div class="form-header">
+        <h3>
+            <i class="fas fa-money-check-alt"></i>
+            Add Payroll
+        </h3>
+        <a href="{{ route('payroll.index') }}" class="btn">
+            <i class="fas fa-arrow-left me-2"></i>Back
+        </a>
             </div>
 
+    <div class="form-card">
             <form action="{{ route('payroll.store') }}" method="POST" id="payrollForm">
                 @csrf
 
-                <!-- Employee Dropdown -->
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label for="inputEmployeeId">Employee Name</label>
-                        <select class="form-control" id="inputEmployeeId" name="employee_id" required>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group-wrapper">
+                        <label for="inputEmployeeId"><i class="fas fa-user me-2"></i>Employee Name</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-user"></i>
+                            <select class="form-control form-select" id="inputEmployeeId" name="employee_id" required>
                             <option value="">Select Employee</option>
                             @foreach($employees as $employee)
                                 <option value="{{ $employee->id }}" {{ old('employee_id') == $employee->id ? 'selected' : '' }}>
@@ -28,50 +34,78 @@
                             @endforeach
                         </select>
                     </div>
-                </div>
-
-                <!-- Salary & Bonus -->
-                <div class="row mb-4">
-                    <div class="col-sm-6">
-                        <label for="salary">Salary:</label>
-                        <input type="number" step="0.01" class="form-control" id="salary" name="salary"
-                               value="{{ old('salary') }}" required>
+                        @if ($errors->has('employee_id'))
+                        <span class="text-danger">{{ $errors->first('employee_id') }}</span>
+                        @endif
                     </div>
-                    <div class="col-sm-6">
-                        <label for="bonus">Bonus:</label>
-                        <input type="number" step="0.01" class="form-control" id="bonus" name="bonus"
-                               value="{{ old('bonus') }}">
                     </div>
                 </div>
 
-                <!-- Deduction & Total -->
-                <div class="row mb-4">
-                    <div class="col-sm-6">
-                        <label for="deduction">Deduction:</label>
-                        <input type="number" step="0.01" class="form-control" id="deduction" name="deduction"
-                               value="{{ old('deduction') }}">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="salary"><i class="fas fa-pound-sign me-2"></i>Salary</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-pound-sign"></i>
+                            <input type="number" step="0.01" class="form-control" id="salary" name="salary" placeholder="Enter Salary" value="{{ old('salary') }}" required>
+                        </div>
+                        @if ($errors->has('salary'))
+                        <span class="text-danger">{{ $errors->first('salary') }}</span>
+                        @endif
                     </div>
-                    <div class="col-sm-6">
-                        <label for="total">Total:</label>
-                        <input type="number" step="0.01" class="form-control" id="total" name="total"
-                               value="{{ old('total') }}" readonly required>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="bonus"><i class="fas fa-gift me-2"></i>Bonus</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-gift"></i>
+                            <input type="number" step="0.01" class="form-control" id="bonus" name="bonus" placeholder="Enter Bonus" value="{{ old('bonus') }}">
+                        </div>
+                        @if ($errors->has('bonus'))
+                        <span class="text-danger">{{ $errors->first('bonus') }}</span>
+                        @endif
+                    </div>
                     </div>
                 </div>
 
-                <!-- Submit & Back -->
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="deduction"><i class="fas fa-minus-circle me-2"></i>Deduction</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-minus-circle"></i>
+                            <input type="number" step="0.01" class="form-control" id="deduction" name="deduction" placeholder="Enter Deduction" value="{{ old('deduction') }}">
+                        </div>
+                        @if ($errors->has('deduction'))
+                        <span class="text-danger">{{ $errors->first('deduction') }}</span>
+                        @endif
                     </div>
                 </div>
-            </form>
-
+                <div class="col-md-6">
+                    <div class="form-group-wrapper">
+                        <label for="total"><i class="fas fa-calculator me-2"></i>Total</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-calculator"></i>
+                            <input type="number" step="0.01" class="form-control" id="total" name="total" placeholder="Total" value="{{ old('total') }}" readonly required>
+                        </div>
+                        @if ($errors->has('total'))
+                        <span class="text-danger">{{ $errors->first('total') }}</span>
+                        @endif
         </div>
     </div>
 </div>
 
-
+            <div class="form-actions">
+                <button type="submit" class="btn btn-submit">
+                    <i class="fas fa-save me-2"></i>Submit
+                </button>
+                <a href="{{ route('payroll.index') }}" class="btn btn-back">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -92,11 +126,8 @@
         bonusField.addEventListener('input', calculateTotal);
         deductionField.addEventListener('input', calculateTotal);
 
-        // Initialize the total field on page load
         calculateTotal();
     });
 </script>
-
-
 
 @endsection
