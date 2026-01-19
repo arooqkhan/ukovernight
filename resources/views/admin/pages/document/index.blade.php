@@ -65,85 +65,289 @@
     }
 </style>
 
+<style>
+    .filter-section {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin-bottom: 24px;
+    }
+
+    .filter-section .form-label {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .filter-section .form-control,
+    .filter-section select {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+
+    .filter-section .form-control:focus,
+    .filter-section select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+    }
+
+    .filter-section .form-control::placeholder {
+        color: #94a3b8;
+    }
+
+    .filter-section .btn {
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .filter-section .btn-secondary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+    }
+
+    .filter-section .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        color: #ffffff;
+    }
+
+    .status-filter-group {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding-top: 16px;
+        border-top: 1px solid #e5e7eb;
+        margin-top: 20px;
+    }
+
+    .status-filter-group .status-label {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .status-radio-group {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .status-radio-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+    }
+
+    .status-radio-option input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #667eea;
+    }
+
+    .status-radio-option label {
+        margin: 0;
+        cursor: pointer;
+        font-weight: 500;
+        color: #475569;
+        font-size: 0.9rem;
+    }
+
+    .filter-dropdown-menu {
+        min-width: 400px;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border: 1px solid #e5e7eb;
+        margin-top: 8px !important;
+    }
+
+    .filter-dropdown-menu .form-label {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .filter-dropdown-menu .form-control,
+    .filter-dropdown-menu select {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        margin-bottom: 16px;
+    }
+
+    .filter-dropdown-menu .form-control:focus,
+    .filter-dropdown-menu select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+    }
+
+    .filter-dropdown-toggle {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .filter-dropdown-toggle:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        color: #ffffff;
+    }
+
+    .filter-dropdown-toggle:focus {
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        color: #ffffff;
+    }
+</style>
+
 <div class="col-lg-12">
-    <h4 class="ml-2">Employees Document</h4>
+    <div class="d-flex justify-content-between align-items-center mb-3" style="padding-left: 10px; padding-top: 0;">
+        <div class="d-flex align-items-center">
+            <div class="me-3">
+                <i class="fas fa-file-alt fa-2x" style="color: #1f2937;"></i>
+            </div>
+            <div>
+                <h4 class="mb-0" style="font-weight: 600; font-size: 1.5rem; color: #0f172a;">Employees Document</h4>
+                <p class="text-muted mb-0" style="font-size: 0.9rem;">Manage and track employee documents</p>
+            </div>
+        </div>
+    </div>
+
     <div class="statbox widget box box-shadow">
-        @if(session('success'))
+        <meta name="flash-success" content="{{ session('success') }}">
+        <meta name="flash-error" content="{{ session('error') }}">
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                var successMeta = document.querySelector('meta[name="flash-success"]');
+                var errorMeta = document.querySelector('meta[name="flash-error"]');
+                var success = successMeta ? successMeta.getAttribute('content') : '';
+                var errorMsg = errorMeta ? errorMeta.getAttribute('content') : '';
+                if (success) {
                 Swal.fire({
                     position: 'bottom-end',
                     icon: 'success',
-                    title: '{{ session('success') }}',
+                        title: success,
                     showConfirmButton: false,
                     timer: 3000,
                     toast: true,
-                    background: '#28a745',
-                    customClass: {
-                        popup: 'small-swal-popup'
-                    }
+                        background: '#10b981',
+                        color: '#ffffff',
+                        customClass: { popup: 'small-swal-popup' }
                 });
-            });
-        </script>
-        @endif
-
-        @if(session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+                }
+                if (errorMsg) {
                 Swal.fire({
                     position: 'bottom-end',
                     icon: 'error',
-                    title: '{{ session('error') }}',
+                        title: errorMsg,
                     showConfirmButton: false,
                     timer: 3000,
                     toast: true,
-                    background: '#dc3545',
-                    customClass: {
-                        popup: 'small-swal-popup'
-                    }
+                        background: '#ef4444',
+                        color: '#ffffff',
+                        customClass: { popup: 'small-swal-popup' }
                 });
+                }
             });
         </script>
-        @endif
         <div class="widget-content widget-content-area">
 
-
-            <a href="{{ route('document.create') }}" class="btn btn-secondary m-2">Add Document</a>
-            <a href="{{ route('accouncementdocument.index') }}" class="btn btn-secondary m-2">Requested Document</a>
-
-
+            <!-- Filter Toolbar -->
+            <div class="filter-section">
+                <div class="row align-items-center">
+                    <!-- Left: Primary actions -->
+                    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                        <div class="d-flex gap-2" style="flex-wrap: nowrap;">
+                            <a href="{{ route('document.create') }}" class="btn btn-secondary" style="white-space: nowrap;">
+                                <i class="fas fa-plus me-2"></i>Add Document
+                            </a>
+                            <a href="{{ route('accouncementdocument.index') }}" class="btn btn-secondary" style="white-space: nowrap;">
+                                <i class="fas fa-file-request me-2"></i>Requested Document
+                            </a>
+                        </div>
+                    </div>
 
             @if(auth()->user()->role == 'admin' || auth()->user()->role == 'HR' || auth()->user()->role == 'Accountant')
-            <div class="row mt-3 p-2">
-                <div class="col-4">
+                    <!-- Right: Filter Dropdown -->
+                    <div class="col-12 col-lg-6 d-flex justify-content-end">
+                        <div class="dropdown">
+                            <button class="btn filter-dropdown-toggle dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-filter me-2"></i>Filter
+                            </button>
+                            <div class="dropdown-menu filter-dropdown-menu" aria-labelledby="filterDropdown">
+                                <div class="px-2">
+                                    <label for="employeeSelect" class="form-label">Select Employee</label>
                     <select id="employeeSelect" class="form-control" onchange="filterDocuments()">
                         <option value="">Select Employee</option>
                         @foreach($employees as $employee)
                         <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}</option>
                         @endforeach
                     </select>
-
                 </div>
-
-                <div class="col-4">
-                    <input type="text" id="searchTitleInput" class="form-control" placeholder="Search by Document Title" onkeyup="filterDocuments()">
+                                <div class="px-2">
+                                    <label for="searchTitleInput" class="form-label">Search by Document Title</label>
+                                    <input type="text" id="searchTitleInput" class="form-control" placeholder="e.g. Passport" onkeyup="filterDocuments()">
                 </div>
-                
-                <div class="col-4">
-                    <input type="text"  id="searchNameInput" class="form-control" placeholder="Search by Employee Name" onkeyup="filterDocuments()">
+                                <div class="px-2">
+                                    <label for="searchNameInput" class="form-label">Search by Employee Name</label>
+                                    <input type="text" id="searchNameInput" class="form-control" placeholder="e.g. John Doe" onkeyup="filterDocuments()">
                 </div>
             </div>
-            <div class="m-3">
-                <label>Status:</label>
-                <div>
-                    <input type="radio" name="status" value="" checked onclick="filterDocuments()"> All
-                    <input type="radio" name="status" value="0" onclick="filterDocuments()"> Pending
-                    <input type="radio" name="status" value="1" onclick="filterDocuments()"> Accepted
-                    <input type="radio" name="status" value="2" onclick="filterDocuments()"> Rejected
                 </div>
             </div>
             @endif
-            <table id="style-2" class="table style-2 dt-table-hover">
+                </div>
+
+                @if(auth()->user()->role == 'admin' || auth()->user()->role == 'HR' || auth()->user()->role == 'Accountant')
+                <!-- Status filters -->
+                <div class="status-filter-group">
+                    <span class="status-label">Status:</span>
+                    <div class="status-radio-group">
+                        <div class="status-radio-option">
+                            <input type="radio" name="status" id="statusAll" value="" checked onclick="filterDocuments()">
+                            <label for="statusAll">All</label>
+                        </div>
+                        <div class="status-radio-option">
+                            <input type="radio" name="status" id="statusPending" value="0" onclick="filterDocuments()">
+                            <label for="statusPending">Pending</label>
+                        </div>
+                        <div class="status-radio-option">
+                            <input type="radio" name="status" id="statusAccepted" value="1" onclick="filterDocuments()">
+                            <label for="statusAccepted">Accepted</label>
+                        </div>
+                        <div class="status-radio-option">
+                            <input type="radio" name="status" id="statusRejected" value="2" onclick="filterDocuments()">
+                            <label for="statusRejected">Rejected</label>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            </div>
+
+            <table id="style-2" class="table table-striped align-middle style-2 dt-table-hover">
                 <thead>
                     <tr>
                         <th style="padding-top: 0 !important;">ID</th>
@@ -197,7 +401,16 @@
                             <span class="badge badge-success">Accepted</span>
                             @elseif($document->status == 2)
 
-                            <a href="{{ route('documents.edits', ['title' => $document->name, 'id' => $document->employee->id, 'first_name' => $document->employee->first_name, 'last_name' => $document->employee->last_name,'docid' =>$document->id]) }}" class="btn btn-danger">Rejected/Upload</a>
+                            @php
+                                $rejectedUploadUrl = route('documents.edits', [
+                                    'title' => $document->name,
+                                    'id' => optional($document->employee)->id,
+                                    'first_name' => optional($document->employee)->first_name,
+                                    'last_name' => optional($document->employee)->last_name,
+                                    'docid' => $document->id
+                                ]);
+                            @endphp
+                            <a href="{{ $rejectedUploadUrl }}" class="btn btn-danger">Rejected/Upload</a>
 
                             @endif
                         </td>

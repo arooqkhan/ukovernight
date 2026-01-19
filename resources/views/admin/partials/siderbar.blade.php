@@ -7,8 +7,68 @@
         left: 0;
         top: 0;
         overflow-y: auto;
+        overflow-x: visible;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         z-index: 1000;
+        border-radius: 0;
+        width: 276px;
+        transition: width 0.3s ease;
+    }
+
+    /* Collapsed sidebar state */
+    .sidebar-wrapper.collapsed {
+        width: 100px;
+    }
+
+    /* Toggle button - Highly Visible */
+    .sidebar-toggle {
+        position: absolute;
+        top: 20px;
+        right: -12px;
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+
+
+    .sidebar-toggle:hover {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        transform: scale(1.15);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(255, 255, 255, 0.7);
+    }
+
+    .sidebar-toggle:active {
+        transform: scale(1.05);
+    }
+
+    .sidebar-toggle svg {
+        width: 18px;
+        height: 18px;
+        color: #ffffff !important;
+        stroke: #ffffff !important;
+        stroke-width: 3;
+        fill: none;
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar-toggle svg path,
+    .sidebar-toggle svg polyline,
+    .sidebar-toggle svg line {
+        stroke: #ffffff !important;
+        color: #ffffff !important;
+    }
+
+    .sidebar-wrapper.collapsed .sidebar-toggle svg {
+        transform: rotate(180deg);
     }
 
     .sidebar-wrapper::-webkit-scrollbar {
@@ -36,8 +96,6 @@
         font-size: 1.5rem;
     }
 
-
-
     .user-info::before {
         content: '';
         position: absolute;
@@ -49,42 +107,23 @@
     }
 
 
-
-    .profile-img:hover {
-        border-color: rgba(255, 255, 255, 0.6);
-        transform: scale(1.05);
-    }
-
-    .profile-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
     .profile-content {
         flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .profile-content h6 {
-        margin: 0;
+        margin: 0 0 8px 0;
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: white;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        letter-spacing: 0.5px;
-    }
-
-    .profile-content p {
-        margin: 5px 0 0;
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.9);
-        font-weight: 500;
-        background: rgba(255, 255, 255, 0.15);
-        padding: 4px 10px;
-        border-radius: 20px;
-        display: inline-block;
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        letter-spacing: 0.3px;
+        line-height: 1.3;
+        word-break: break-word;
     }
 
     /* Animation for profile section */
@@ -119,7 +158,6 @@
         align-items: center;
         padding: 12px 20px;
         color: white !important;
-        /* Force white color */
         transition: all 0.3s ease;
         text-decoration: none;
         border-left: 3px solid transparent;
@@ -144,22 +182,37 @@
         height: 20px;
         margin-right: 15px;
         color: white !important;
-        /* Force white color for icons */
         opacity: 0.9;
+        display: block;
+        flex-shrink: 0;
+    }
+    
+    .menu i {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+        color: white !important;
+        opacity: 0.9;
+        display: block;
+        flex-shrink: 0;
+        font-size: 20px;
+        text-align: center;
     }
 
     .menu a:hover svg,
     .menu a:focus svg,
-    .menu a.active svg {
+    .menu a.active svg,
+    .menu a:hover i,
+    .menu a:focus i,
+    .menu a.active i {
         opacity: 1;
         color: white !important;
     }
 
     .menu span {
-        font-weight: 500;
+        font-weight: 400;
         font-size: 0.95rem;
         color: white !important;
-        /* Force white color for text */
     }
 
     /* Responsive adjustments */
@@ -189,34 +242,80 @@
     }
 
     .profile-info {
-        padding: 20px 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 12px 12px;
+        border-bottom: none;
         background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
-        margin: 10px 15px;
-        border-radius: 12px;
+        margin: 8px 8px 12px 8px;
+        border-radius: 20px;
         backdrop-filter: blur(10px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .profile-name {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .profile-name h6 {
+        margin: 0 0 4px 0;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: white;
+        text-shadow: none;
+        letter-spacing: 0.1px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
     }
 
     .user-info {
         display: flex;
-        align-items: center;
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        position: relative;
-        overflow: hidden;
+        align-items: flex-start;
+        padding: 0;
+        margin-bottom: 0;
+        gap: 10px;
+        background: transparent !important;
     }
 
-    .user-info::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    .profile-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        flex-shrink: 0;
+        margin-right: 10px;
+        background: transparent;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        padding: 0 !important;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .profile-img:hover {
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .profile-img img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center center !important;
+        border-radius: 12px !important;
+        display: block !important;
+        transition: transform 0.3s ease;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-sizing: border-box !important;
     }
 
     .profile-img:hover img {
@@ -225,79 +324,41 @@
 
     /* Fallback for broken images */
     .profile-img img[src=""],
-    .profile-img img:not([src]) {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
+    .profile-img img:not([src]),
+    .profile-img img[onerror] {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+       
     }
 
-    .profile-img img[src=""]::after,
-    .profile-img img:not([src])::after {
-        content: "👤";
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-    }
-
-    .profile-content {
-        flex: 1;
-        min-width: 0;
-        /* Prevents text overflow */
-    }
-
-    .profile-content h6 {
-        margin: 0;
-        font-weight: 700;
-        font-size: 1.1rem;
-        color: white;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-        letter-spacing: 0.5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .profile-content p {
-        margin: 8px 0 0;
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.95);
-        font-weight: 600;
-        background: rgba(255, 255, 255, 0.2);
-        padding: 6px 12px;
-        border-radius: 20px;
+    .profile-designation {
+        margin-top: 0;
+        text-align: left;
+        width: auto;
         display: inline-block;
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        text-transform: capitalize;
+    }
+
+    .profile-designation p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 500;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        display: inline;
+        width: auto;
+        min-width: auto;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: none;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
+        transition: all 0.3s ease;
+        text-align: left;
+        box-shadow: none;
     }
 
-    /* Animation for profile section */
-    @keyframes profileGlow {
-        0% {
-            box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
-        }
-
-        70% {
-            box-shadow: 0 0 0 10px rgba(74, 144, 226, 0);
-        }
-
-        100% {
-            box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
-        }
-    }
-
-    .user-info {
-        animation: profileGlow 2s infinite;
+    .profile-designation p:hover {
+        color: rgba(255, 255, 255, 1);
     }
 
     /* Responsive design for profile */
@@ -310,8 +371,11 @@
         .profile-img {
             width: 50px;
             height: 50px;
-            margin-right: 12px;
+            margin-right: 0;
+            border-radius: 8px;
         }
+        
+      
 
         .profile-content h6 {
             font-size: 1rem;
@@ -323,28 +387,191 @@
         }
     }
 
-    /* Sidebar scrollbar - professional style */
+    /* Sidebar scrollbar - hide visually but keep scrolling */
     .sidebar-wrapper {
         overflow-y: auto;
-        /* Only this div scrolls */
+    }
+    
+    /* Hide sidebar scrollbar completely */
+    .sidebar-wrapper::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+    }
+    
+    .sidebar-wrapper {
+        scrollbar-width: none !important; /* Firefox */
+        -ms-overflow-style: none !important; /* IE/Edge */
+    }
+
+    /* Collapsed state styles */
+    .sidebar-wrapper.collapsed .profile-info {
+        margin: 8px 6px;
+        padding: 10px 6px;
+    }
+
+    .sidebar-wrapper.collapsed .menu span {
+        display: none !important;
+    }
+
+    /* Show name and designation when collapsed */
+    .sidebar-wrapper.collapsed .profile-name {
+        display: flex !important;
+        flex-direction: column !important;
+        visibility: visible !important;
+        text-align: center !important;
+        width: 100% !important;
+        align-items: center !important;
+    }
+    
+    .sidebar-wrapper.collapsed .profile-designation {
+        display: block !important;
+        visibility: visible !important;
+        text-align: center !important;
+        width: 100% !important;
+        margin-top: 2px !important;
+    }
+
+    .sidebar-wrapper.collapsed .profile-name h6 {
+        font-size: 0.7rem !important;
+        margin: 6px 0 2px 16px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        width: 100% !important;
+        text-align: center !important;
+        line-height: 1.2 !important;
+    }
+
+    .sidebar-wrapper.collapsed .profile-designation p {
+        font-size: 0.65rem !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        color: rgba(255, 255, 255, 0.85) !important;
+        font-weight: 500 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .sidebar-wrapper.collapsed .profile-img {
+        margin-right: 0;
+        margin-bottom: 6px;
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .sidebar-wrapper.collapsed .user-info {
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-bottom: 0 !important;
+        width: 100% !important;
+    }
+    
+    .sidebar-wrapper.collapsed .profile-info {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .sidebar-wrapper.collapsed .menu a {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    /* Ensure menu icons are always visible when collapsed */
+    .sidebar-wrapper.collapsed .menu-categories,
+    .sidebar-wrapper.collapsed ul.menu-categories,
+    .sidebar-wrapper.collapsed .list-unstyled {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .sidebar-wrapper.collapsed .menu,
+    .sidebar-wrapper.collapsed li.menu {
+        display: block !important;
+        visibility: visible !important;
+        margin-bottom: 5px !important;
+        opacity: 1 !important;
+    }
+    
+    .sidebar-wrapper.collapsed .menu a {
+        display: flex !important;
+        visibility: visible !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 12px !important;
+        opacity: 1 !important;
+    }
+    
+    .sidebar-wrapper.collapsed .menu a div {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        visibility: visible !important;
+    }
+    
+    /* Force all SVG icons to be visible when collapsed - Larger size */
+    .sidebar-wrapper.collapsed .menu svg,
+    .sidebar-wrapper.collapsed .menu a svg,
+    .sidebar-wrapper.collapsed .menu a div svg,
+    .sidebar-wrapper.collapsed svg.feather {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+        width: 26px !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        min-height: 26px !important;
+        max-width: 26px !important;
+        max-height: 26px !important;
+        color: white !important;
+        flex-shrink: 0 !important;
+    }
+    
+    /* Ensure all SVG paths are white and visible */
+    .sidebar-wrapper.collapsed .menu svg path,
+    .sidebar-wrapper.collapsed .menu svg polyline,
+    .sidebar-wrapper.collapsed .menu svg line,
+    .sidebar-wrapper.collapsed .menu svg circle,
+    .sidebar-wrapper.collapsed .menu svg rect,
+    .sidebar-wrapper.collapsed svg.feather path,
+    .sidebar-wrapper.collapsed svg.feather polyline,
+    .sidebar-wrapper.collapsed svg.feather line,
+    .sidebar-wrapper.collapsed svg.feather circle,
+    .sidebar-wrapper.collapsed svg.feather rect {
+        stroke: white !important;
+        fill: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Ensure SVG has proper stroke width */
+    .sidebar-wrapper.collapsed .menu svg,
+    .sidebar-wrapper.collapsed svg.feather {
+        stroke: white !important;
+        stroke-width: 2 !important;
     }
 
     /* Track (background) */
     .sidebar-wrapper::-webkit-scrollbar {
         width: 8px;
-        /* thinner scrollbar */
     }
 
     .sidebar-wrapper::-webkit-scrollbar-track {
         background: rgba(0, 0, 0, 0.1);
-        /* subtle track */
         border-radius: 10px;
     }
 
     /* Thumb (the draggable part) */
     .sidebar-wrapper::-webkit-scrollbar-thumb {
         background: rgba(255, 255, 255, 0.2);
-        /* subtle, blends with sidebar */
         border-radius: 10px;
         transition: background 0.3s ease;
     }
@@ -352,7 +579,6 @@
     /* Thumb hover effect */
     .sidebar-wrapper::-webkit-scrollbar-thumb:hover {
         background: rgba(255, 255, 255, 0.4);
-        /* stands out on hover */
     }
 
     /* Optional: minimal scrollbar for Firefox */
@@ -362,7 +588,13 @@
     }
 </style>
 
-<div class="sidebar-wrapper sidebar-theme" style="width: 260px;">
+<div class="sidebar-wrapper sidebar-theme" id="sidebarWrapper">
+    <!-- Toggle Button -->
+    <div class="sidebar-toggle" id="sidebarToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </div>
     <nav id="sidebar">
         <!-- <div class="navbar-nav">
             <div class="nav-logo">
@@ -376,23 +608,27 @@
             <div class="user-info">
                 <div class="profile-img">
                     @if (Auth::user()->image && file_exists(public_path(Auth::user()->image)))
-                    <img src="{{ asset(Auth::user()->image) }}" alt="{{ auth()->user()->name }}" onerror="this.src='{{ asset('images/dummy.jpg') }}'" style="width: 60px; height: 60px;">
+                    <img src="{{ asset(Auth::user()->image) }}" alt="{{ auth()->user()->name }}" onerror="this.src='{{ asset('images/dummy.jpg') }}'">
                     @else
                     <img src="{{ asset('images/dummy.jpg') }}" alt="{{ auth()->user()->name }}">
                     @endif
                 </div>
-                <div class="profile-content">
                     @if(auth()->check())
+                <div class="profile-name">
                     <h6 class="text-white">{{ auth()->user()->name }}</h6>
-                    @endif
+                    <div class="profile-designation">
                     <p class="text-white">
                         @if (auth()->user()->role == 0)
                         HR
+                            @elseif(auth()->user()->role == 'admin')
+                            Admin
                         @else
-                        {{ auth()->user()->role }}
+                            {{ ucfirst(auth()->user()->role) }}
                         @endif
                     </p>
+                    </div>
                 </div>
+                @endif
             </div>
         </div>
 
@@ -653,9 +889,7 @@
 
     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-toggle">
         <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out">
-                <path d="M10 17l5-5-5-5M15 12H3" />
-            </svg>
+            <i class="fas fa-power-off"></i>
             <span>Logout</span>
         </div>
     </a>
@@ -663,3 +897,65 @@
         </ul>
     </nav>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebarWrapper = document.getElementById('sidebarWrapper');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    
+    // Check if sidebar state is saved in localStorage
+    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (isCollapsed) {
+        sidebarWrapper.classList.add('collapsed');
+    }
+    
+    // Toggle sidebar on button click
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebarWrapper.classList.toggle('collapsed');
+            
+            // Save state to localStorage
+            const collapsed = sidebarWrapper.classList.contains('collapsed');
+            localStorage.setItem('sidebarCollapsed', collapsed);
+            
+            // Adjust main content margin
+            adjustContentMargin();
+        });
+    }
+    
+    // Function to adjust main content margin based on sidebar state
+    function adjustContentMargin() {
+        const content = document.getElementById('content');
+        const headerContainer = document.querySelector('.header-container');
+        
+        const isCollapsed = sidebarWrapper.classList.contains('collapsed');
+        
+        // Sidebar widths (matching CSS values)
+        const sidebarExpandedWidth = 280; // Expanded sidebar width
+        const sidebarCollapsedWidth = 100; // Collapsed sidebar width
+        
+        // Adjust main content margin
+        const contentMargin = isCollapsed ? sidebarCollapsedWidth + 'px' : sidebarExpandedWidth + 'px';
+        if (content) {
+            content.style.marginLeft = contentMargin;
+            content.style.transition = 'margin-left 0.3s ease';
+        }
+        
+        // Adjust header container - uses 'left' property (as per CSS structure.css)
+        if (headerContainer) {
+            const headerLeft = isCollapsed ? (sidebarCollapsedWidth + 3) + 'px' : (sidebarExpandedWidth - 1) + 'px';
+            const headerWidth = isCollapsed ? 'calc(100% - ' + (sidebarCollapsedWidth + 48) + 'px)' : 'calc(100% - ' + (sidebarExpandedWidth + 48) + 'px)';
+            
+            headerContainer.style.left = headerLeft;
+            headerContainer.style.width = headerWidth;
+            headerContainer.style.transition = 'left 0.3s ease, width 0.3s ease';
+        }
+    }
+    
+    // Initialize content margin
+    adjustContentMargin();
+    
+    // Adjust on window resize
+    window.addEventListener('resize', adjustContentMargin);
+});
+</script>

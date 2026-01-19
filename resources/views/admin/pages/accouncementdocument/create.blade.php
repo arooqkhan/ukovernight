@@ -2,60 +2,83 @@
 
 @section('content')
 
-<div class="row">
-    <div id="flStackForm" class="col-lg-12 layout-spacing layout-top-spacing">
-        <div class="statbox widget box box-shadow">
+@include('admin.pages.partials.form-styles')
 
-            <div class="row">
-                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h3>Add Announcement Document</h3>
-                </div>
+<div class="form-container">
+    <div class="form-header">
+        <h3>
+            <i class="fas fa-file-alt"></i>
+            Add Announcement Document
+        </h3>
+        <a href="{{ route('accouncementdocument.index') }}" class="btn">
+            <i class="fas fa-arrow-left me-2"></i>Back
+        </a>
             </div>
 
+    <div class="form-card">
             <form action="{{ route('accouncementdocument.store') }}" method="POST" id="expenseForm" enctype="multipart/form-data">
                 @csrf
 
-                <!-- Employee Dropdown -->
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label for="inputEmployee">Select Employee</label>
-                        <select class="form-control" id="inputEmployee" name="employee_id" required>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group-wrapper">
+                        <label for="inputEmployee"><i class="fas fa-user me-2"></i>Select Employee</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-user"></i>
+                            <select class="form-control form-select" id="inputEmployee" name="employee_id" required>
                             <option value="" disabled selected>Select an Employee</option>
                             @foreach ($employees as $employee)
                             <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}</option>
                             @endforeach
                         </select>
                     </div>
+                        @if ($errors->has('employee_id'))
+                        <span class="text-danger">{{ $errors->first('employee_id') }}</span>
+                        @endif
                 </div>
-
-                <!-- Document Title Input -->
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label for="inputTitle">Title</label>
-                        <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Document Title" value="{{ old('title') }}" required>
                     </div>
                 </div>
 
-                <!-- Expiry Date Input -->
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label for="inputExpiry">Expiry Date</label>
-                        <input type="date" class="form-control" id="inputExpiry" name="expiry_date" value="{{ old('expiry_date') }}" required>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group-wrapper">
+                        <label for="inputTitle"><i class="fas fa-heading me-2"></i>Title</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-heading"></i>
+                            <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Enter Document Title" value="{{ old('title') }}" required>
+                        </div>
+                        @if ($errors->has('title'))
+                        <span class="text-danger">{{ $errors->first('title') }}</span>
+                        @endif
+                    </div>
                     </div>
                 </div>
 
-                <!-- Submit and Back Buttons -->
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group-wrapper">
+                        <label for="inputExpiry"><i class="fas fa-calendar-times me-2"></i>Expiry Date</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-calendar-times"></i>
+                            <input type="date" class="form-control" id="inputExpiry" name="expiry_date" value="{{ old('expiry_date') }}" required>
                     </div>
-                </div>
-            </form>
-
+                        @if ($errors->has('expiry_date'))
+                        <span class="text-danger">{{ $errors->first('expiry_date') }}</span>
+                        @endif
         </div>
     </div>
 </div>
 
+            <div class="form-actions">
+                <button type="submit" class="btn btn-submit">
+                    <i class="fas fa-save me-2"></i>Submit
+                </button>
+                <a href="{{ route('accouncementdocument.index') }}" class="btn btn-back">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
 
 @endsection

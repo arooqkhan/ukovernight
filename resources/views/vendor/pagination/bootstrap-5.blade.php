@@ -44,11 +44,11 @@
                     {{-- Previous Page Link --}}
                     @if ($paginator->onFirstPage())
                         <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
-                            <span class="page-link" aria-hidden="true">&lsaquo;</span>
+                            <span class="page-link" aria-hidden="true" style="color: #ffffff !important; font-size: 1.4rem !important; font-weight: 700 !important;">&lt;</span>
                         </li>
                     @else
                         <li class="page-item">
-                            <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;</a>
+                            <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border-color: #667eea !important; color: #ffffff !important; font-size: 1.4rem !important; font-weight: 700 !important;">&lt;</a>
                         </li>
                     @endif
 
@@ -74,11 +74,11 @@
                     {{-- Next Page Link --}}
                     @if ($paginator->hasMorePages())
                         <li class="page-item">
-                            <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')">&rsaquo;</a>
+                            <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border-color: #667eea !important; color: #ffffff !important; font-size: 1.4rem !important; font-weight: 700 !important;">&gt;</a>
                         </li>
                     @else
                         <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
-                            <span class="page-link" aria-hidden="true">&rsaquo;</span>
+                            <span class="page-link" aria-hidden="true" style="color: #ffffff !important; font-size: 1.4rem !important; font-weight: 700 !important;">&gt;</span>
                         </li>
                     @endif
                 </ul>
