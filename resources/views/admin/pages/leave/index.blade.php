@@ -272,7 +272,7 @@
                         </div>
                         
                         <div class="col-md-4 d-flex align-items-end">
-                            <button type="submit" class="btn btn-secondary w-100">
+                            <button type="submit" class="btn btn-secondary">
                                 <i class="fas fa-search me-2"></i> Filter Results
                             </button>
                         </div>
